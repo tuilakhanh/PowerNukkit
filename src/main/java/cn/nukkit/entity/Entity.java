@@ -1315,6 +1315,12 @@ public abstract class Entity extends Location implements Metadatable {
         double diffMotion = (this.motionX - this.lastMotionX) * (this.motionX - this.lastMotionX) + (this.motionY - this.lastMotionY) * (this.motionY - this.lastMotionY) + (this.motionZ - this.lastMotionZ) * (this.motionZ - this.lastMotionZ);
 
         if (diffPosition > 0.0001 || diffRotation > 1.0) { //0.2 ** 2, 1.5 ** 2
+            double fromX = this.lastX;
+            double fromY = this.lastY;
+            double fromZ = this.lastZ;
+            double fromYaw = this.lastYaw;
+            double fromPitch= this.lastPitch;
+
             this.lastX = this.x;
             this.lastY = this.y;
             this.lastZ = this.z;
@@ -1322,7 +1328,9 @@ public abstract class Entity extends Location implements Metadatable {
             this.lastYaw = this.yaw;
             this.lastPitch = this.pitch;
 
-            this.addMovement(this.x, this.y + this.getBaseOffset(), this.z, this.yaw, this.pitch, this.yaw);
+            float baseOffset = this.getBaseOffset();
+            this.addMovement(fromX, fromY + baseOffset, fromZ, fromYaw, fromPitch, fromYaw,
+                    this.x, this.y + baseOffset, this.z, this.yaw, this.pitch, this.yaw);
         }
 
         if (diffMotion > 0.0025 || (diffMotion > 0.0001 && this.getMotion().lengthSquared() <= 0.0001)) { //0.05 ** 2
@@ -1332,6 +1340,11 @@ public abstract class Entity extends Location implements Metadatable {
 
             this.addMotion(this.motionX, this.motionY, this.motionZ);
         }
+    }
+
+    protected void addMovement(double fromX, double fromY, double fromZ, double fromYaw, double fromPitch, double fromHeadYaw,
+                               double toX, double toY, double toZ, double toYaw, double toPitch, double toHeadYaw) {
+        addMovement(toX, toY, toZ, toYaw, toPitch, toHeadYaw);
     }
 
     public void addMovement(double x, double y, double z, double yaw, double pitch, double headYaw) {

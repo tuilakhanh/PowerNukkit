@@ -233,6 +233,12 @@ public class EntityItem extends Entity {
     }
 
     @Override
+    protected void addMovement(double fromX, double fromY, double fromZ, double fromYaw, double fromPitch, double fromHeadYaw,
+                               double toX, double toY, double toZ, double toYaw, double toPitch, double toHeadYaw) {
+        this.level.addDeltaMovement(this, fromX, fromY, fromZ, fromYaw, fromPitch, fromHeadYaw, toX, toY, toZ, toYaw, toPitch, toHeadYaw);
+    }
+
+    @Override
     public void saveNBT() {
         super.saveNBT();
         if (this.item != null) { // Yes, a item can be null... I don't know what causes this, but it can happen.

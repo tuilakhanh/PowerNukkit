@@ -3216,6 +3216,22 @@ public class Level implements ChunkManager, Metadatable {
         Server.broadcastPacket(entity.getViewers().values(), pk);
     }
 
+    public void addDeltaMovement(Entity entity,
+                                 double fromX, double fromY, double fromZ, double fromYaw, double fromPitch, double fromHeadYaw,
+                                 double toX, double toY, double toZ, double toYaw, double toPitch, double toHeadYaw) {
+        MoveEntityDeltaPacket pk = new MoveEntityDeltaPacket();
+        pk.eid = entity.getId();
+        pk.xDelta = MoveEntityDeltaPacket.encodeCoordinateDelta(fromX, toX);
+        pk.yDelta = MoveEntityDeltaPacket.encodeCoordinateDelta(fromY, toY);
+        pk.zDelta = MoveEntityDeltaPacket.encodeCoordinateDelta(fromZ, toZ);
+        pk.yawDelta = MoveEntityDeltaPacket.encodeRotationDelta(fromYaw, toYaw);
+        pk.headYawDelta = MoveEntityDeltaPacket.encodeRotationDelta(fromHeadYaw, toHeadYaw);
+        pk.pitchDelta = MoveEntityDeltaPacket.encodeRotationDelta(fromPitch, toPitch);
+        pk.calculateFlags();
+
+        Server.broadcastPacket(entity.getViewers().values(), pk);
+    }
+
     public boolean isRaining() {
         return this.raining;
     }
