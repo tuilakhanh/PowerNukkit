@@ -39,7 +39,22 @@ public class SimpleBlocksReader {
             } else {
                 SortedMap<String, SortedSet<String>> registeredProperties = states.computeIfAbsent(name, k-> new TreeMap<>(humanStringComparator));
                 for (Tag tag : statesCompound.getAllTags()) {
-                    SortedSet<String> registeredValues = registeredProperties.computeIfAbsent(tag.getName(), k -> new TreeSet<>(humanStringComparator));
+                    String key = tag.getName();
+                    String suffix;
+                    switch (tag.getId()) {
+                        case Tag.TAG_Byte: suffix = ".b"; break; 
+                        case Tag.TAG_Double: suffix = ".d"; break; 
+                        case Tag.TAG_Float: suffix = ".f"; break; 
+                        case Tag.TAG_Int: suffix = ".i"; break; 
+                        case Tag.TAG_Long: suffix = ".l"; break; 
+                        case Tag.TAG_Short: suffix = ".s"; break; 
+                        case Tag.TAG_String: suffix = ".c"; break;
+                        default: throw new UnsupportedOperationException("Tag type: "+tag.getId());
+                    }
+                    key = key + suffix;
+                    SortedSet<String> registeredValues = registeredProperties.computeIfAbsent(
+                            key,
+                            k -> new TreeSet<>(humanStringComparator));
                     registeredValues.add(tag.parseValue().toString());
                 }
             }
