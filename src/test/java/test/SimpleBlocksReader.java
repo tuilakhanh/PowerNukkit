@@ -73,5 +73,15 @@ public class SimpleBlocksReader {
                 buffered.newLine();
             }
         }
+
+        try(FileWriter fw = new FileWriter("block-names.properties"); BufferedWriter buffered = new BufferedWriter(fw)) {
+            for (String namespacedName : states.keySet()) {
+                String name = namespacedName.substring(namespacedName.indexOf(':') + 1);
+                buffered.write(name);
+                buffered.write('=');
+                buffered.write(name);
+                buffered.newLine();
+            }
+        }
     }
 }
