@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteOrder;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -48,9 +49,9 @@ public class BlockStates {
             throw new AssertionError(e);
         }
 
-        try(FileWriter fos = new FileWriter("before.txt")) {
+        try(FileWriter fos = new FileWriter("after.txt")) {
             for (CompoundTag state : tags.getAll()) {
-                fos.write(state.copy().remove("meta").toString() + '\n');
+                fos.write(state.copy().remove("LegacyStates").toString() + '\n');
                 CompoundTag block = state.getCompound("block");
                 //if (block.getString("name").toLowerCase().contains("piston")) {
                     StringBuilder builder = new StringBuilder(block.getString("name"));
@@ -58,7 +59,10 @@ public class BlockStates {
                         builder.append(';').append(tag.getName()).append('=').append(tag.parseValue());
                     }
                     fos.write(builder.toString() + '\n');
-                    fos.write(Ints.asList(state.getIntArray("meta")).stream().map(i -> state.getInt("id")+":"+i).collect(Collectors.toList()).toString() + '\n');
+                List<String> metas = state.getList("LegacyStates", CompoundTag.class).getAll().stream()
+                        .map(t -> t.getInt("id") + ":" + t.getShort("val"))
+                        .collect(Collectors.toList());
+                fos.write(metas.toString() + '\n');
                     int[] overrides = metaOverrides.get(block.copy().remove("version"));
                     if (overrides != null) {
                         fos.write(Ints.asList(overrides).toString() + '\n');
