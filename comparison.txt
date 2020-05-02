@@ -25548,7 +25548,7 @@ CompoundTag '' (2 entries) {
 	'id' : 470
 }
 minecraft:light_block;block_light_level=14
-[470:6, 470:7]
+[208:6, 208:7]
 
 CompoundTag '' (2 entries) {
 	'block' : CompoundTag 'block' (3 entries) {
@@ -41474,7 +41474,7 @@ CompoundTag '' (2 entries) {
 	'id' : 467
 }
 minecraft:wood;wood_type=acacia;stripped_bit=0;pillar_axis=y
-[467:12, 467:14, 467:15, 467:4]
+[162:12, 162:14, 162:15, 467:4]
 
 CompoundTag '' (2 entries) {
 	'block' : CompoundTag 'block' (3 entries) {
@@ -41564,7 +41564,7 @@ CompoundTag '' (2 entries) {
 	'id' : 467
 }
 minecraft:wood;wood_type=birch;stripped_bit=0;pillar_axis=y
-[467:14, 467:2]
+[17:14, 467:2]
 
 CompoundTag '' (2 entries) {
 	'block' : CompoundTag 'block' (3 entries) {
@@ -41654,7 +41654,7 @@ CompoundTag '' (2 entries) {
 	'id' : 467
 }
 minecraft:wood;wood_type=dark_oak;stripped_bit=0;pillar_axis=y
-[467:13, 467:5]
+[162:13, 467:5]
 
 CompoundTag '' (2 entries) {
 	'block' : CompoundTag 'block' (3 entries) {
@@ -41744,7 +41744,7 @@ CompoundTag '' (2 entries) {
 	'id' : 467
 }
 minecraft:wood;wood_type=jungle;stripped_bit=0;pillar_axis=y
-[467:15, 467:3]
+[17:15, 467:3]
 
 CompoundTag '' (2 entries) {
 	'block' : CompoundTag 'block' (3 entries) {
@@ -41834,7 +41834,7 @@ CompoundTag '' (2 entries) {
 	'id' : 467
 }
 minecraft:wood;wood_type=oak;stripped_bit=0;pillar_axis=y
-[467:12, 467:0, 467:6, 467:7]
+[17:12, 467:0, 467:6, 467:7]
 
 CompoundTag '' (2 entries) {
 	'block' : CompoundTag 'block' (3 entries) {
@@ -41924,7 +41924,7 @@ CompoundTag '' (2 entries) {
 	'id' : 467
 }
 minecraft:wood;wood_type=spruce;stripped_bit=0;pillar_axis=y
-[467:13, 467:1]
+[17:13, 467:1]
 
 CompoundTag '' (2 entries) {
 	'block' : CompoundTag 'block' (3 entries) {
