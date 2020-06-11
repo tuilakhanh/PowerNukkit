@@ -37,13 +37,13 @@ public class PlayerListPacket extends DataPacket {
                 this.putString(entry.xboxUserId);
                 this.putString(entry.platformChatId);
                 this.putLInt(entry.buildPlatform);
-                this.putSkin(entry.skin);
+                this.putSkin(protocol, entry.skin);
                 this.putBoolean(entry.isTeacher);
                 this.putBoolean(entry.isHost);
             }
         }
 
-        if (type == TYPE_ADD) {
+        if (type == TYPE_ADD && protocol >= 390) {
             for (Entry entry : this.entries) { // Biggest wtf
                 this.putBoolean(entry.skin.isTrusted());
             }

@@ -13,6 +13,7 @@ import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.nbt.tag.StringTag;
+import cn.nukkit.network.protocol.ProtocolInfo;
 import cn.nukkit.network.protocol.types.EntityLink;
 import it.unimi.dsi.fastutil.io.FastByteArrayInputStream;
 
@@ -259,6 +260,10 @@ public class BinaryStream {
     }
 
     public void putSkin(Skin skin) {
+        putSkin(ProtocolInfo.CURRENT_PROTOCOL, skin);
+    }
+
+    public void putSkin(int protocol, Skin skin) {
         this.putString(skin.getSkinId());
         this.putString(skin.getSkinResourcePatch());
         this.putImage(skin.getSkinData());
@@ -279,31 +284,37 @@ public class BinaryStream {
         this.putBoolean(skin.isCapeOnClassic());
         this.putString(skin.getCapeId());
         this.putString(skin.getFullSkinId());
-        this.putString(skin.getArmSize());
-        this.putString(skin.getSkinColor());
-        List<PersonaPiece> pieces = skin.getPersonaPieces();
-        this.putLInt(pieces.size());
-        for (PersonaPiece piece : pieces) {
-            this.putString(piece.id);
-            this.putString(piece.type);
-            this.putString(piece.packId);
-            this.putBoolean(piece.isDefault);
-            this.putString(piece.productId);
-        }
+        if (protocol >= 390) {
+            this.putString(skin.getArmSize());
+            this.putString(skin.getSkinColor());
+            List<PersonaPiece> pieces = skin.getPersonaPieces();
+            this.putLInt(pieces.size());
+            for (PersonaPiece piece : pieces) {
+                this.putString(piece.id);
+                this.putString(piece.type);
+                this.putString(piece.packId);
+                this.putBoolean(piece.isDefault);
+                this.putString(piece.productId);
+            }
 
-        List<PersonaPieceTint> tints = skin.getTintColors();
-        this.putLInt(tints.size());
-        for (PersonaPieceTint tint : tints) {
-            this.putString(tint.pieceType);
-            List<String> colors = tint.colors;
-            this.putLInt(colors.size());
-            for (String color : colors) {
-                this.putString(color);
+            List<PersonaPieceTint> tints = skin.getTintColors();
+            this.putLInt(tints.size());
+            for (PersonaPieceTint tint : tints) {
+                this.putString(tint.pieceType);
+                List<String> colors = tint.colors;
+                this.putLInt(colors.size());
+                for (String color : colors) {
+                    this.putString(color);
+                }
             }
         }
     }
 
     public Skin getSkin() {
+        return getSkin(ProtocolInfo.CURRENT_PROTOCOL);
+    }
+
+    public Skin getSkin(int protocol) {
         Skin skin = new Skin();
         skin.setSkinId(this.getString());
         skin.setSkinResourcePatch(this.getString());
@@ -325,28 +336,30 @@ public class BinaryStream {
         skin.setCapeOnClassic(this.getBoolean());
         skin.setCapeId(this.getString());
         this.getString(); // TODO: Full skin id
-        skin.setArmSize(this.getString());
-        skin.setSkinColor(this.getString());
+        if (protocol >= 390) {
+            skin.setArmSize(this.getString());
+            skin.setSkinColor(this.getString());
 
-        int piecesLength = this.getLInt();
-        for (int i = 0; i < piecesLength; i++) {
-            String pieceId = this.getString();
-            String pieceType = this.getString();
-            String packId = this.getString();
-            boolean isDefault = this.getBoolean();
-            String productId = this.getString();
-            skin.getPersonaPieces().add(new PersonaPiece(pieceId, pieceType, packId, isDefault, productId));
-        }
-
-        int tintsLength = this.getLInt();
-        for (int i = 0; i < tintsLength; i++) {
-            String pieceType = this.getString();
-            List<String> colors = new ArrayList<>();
-            int colorsLength = this.getLInt();
-            for (int i2 = 0; i2 < colorsLength; i2++) {
-                colors.add(this.getString());
+            int piecesLength = this.getLInt();
+            for (int i = 0; i < piecesLength; i++) {
+                String pieceId = this.getString();
+                String pieceType = this.getString();
+                String packId = this.getString();
+                boolean isDefault = this.getBoolean();
+                String productId = this.getString();
+                skin.getPersonaPieces().add(new PersonaPiece(pieceId, pieceType, packId, isDefault, productId));
             }
-            skin.getTintColors().add(new PersonaPieceTint(pieceType, colors));
+
+            int tintsLength = this.getLInt();
+            for (int i = 0; i < tintsLength; i++) {
+                String pieceType = this.getString();
+                List<String> colors = new ArrayList<>();
+                int colorsLength = this.getLInt();
+                for (int i2 = 0; i2 < colorsLength; i2++) {
+                    colors.add(this.getString());
+                }
+                skin.getTintColors().add(new PersonaPieceTint(pieceType, colors));
+            }
         }
         return skin;
     }

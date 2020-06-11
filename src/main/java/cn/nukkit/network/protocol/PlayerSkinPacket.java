@@ -21,7 +21,7 @@ public class PlayerSkinPacket extends DataPacket {
     @Override
     public void decode() {
         uuid = getUUID();
-        skin = getSkin();
+        skin = getSkin(protocol);
         newSkinName = getString();
         oldSkinName = getString();
         if (!feof()) { // -facepalm-
@@ -36,6 +36,8 @@ public class PlayerSkinPacket extends DataPacket {
         putSkin(skin);
         putString(newSkinName);
         putString(oldSkinName);
-        putBoolean(skin.isTrusted());
+        if (protocol >= 390) {
+            putBoolean(skin.isTrusted());
+        }
     }
 }
