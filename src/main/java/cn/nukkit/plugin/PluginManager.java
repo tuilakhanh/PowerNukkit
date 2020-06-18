@@ -362,7 +362,7 @@ public class PluginManager {
             this.defaultPerms.put(permission.getName(), permission);
             this.dirtyPermissibles(false);
         }
-        Timings.permissionDefaultTimer.startTiming();
+        Timings.permissionDefaultTimer.stopTiming();
     }
 
     private void dirtyPermissibles(boolean op) {
