@@ -435,6 +435,12 @@ public abstract class Entity extends Location implements Metadatable {
     public boolean fireProof;
     public boolean invulnerable;
 
+    private boolean gliding;
+    private boolean immobile;
+    private boolean sprinting;
+    private boolean swimming;
+    private boolean sneaking;
+
     protected Server server;
 
     public double highestPosition;
@@ -658,7 +664,7 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public boolean isSneaking() {
-        return this.getDataFlag(DATA_FLAGS, DATA_FLAG_SNEAKING);
+        return this.sneaking;
     }
 
     public void setSneaking() {
@@ -666,11 +672,12 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public void setSneaking(boolean value) {
+        this.sneaking = value;
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_SNEAKING, value);
     }
 
     public boolean isSwimming() {
-        return this.getDataFlag(DATA_FLAGS, DATA_FLAG_SWIMMING);
+        return this.swimming;
     }
 
     public void setSwimming() {
@@ -678,11 +685,12 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public void setSwimming(boolean value) {
+        this.swimming = value;
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_SWIMMING, value);
     }
 
     public boolean isSprinting() {
-        return this.getDataFlag(DATA_FLAGS, DATA_FLAG_SPRINTING);
+        return this.sprinting;
     }
 
     public void setSprinting() {
@@ -690,11 +698,12 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public void setSprinting(boolean value) {
+        this.sprinting = value;
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_SPRINTING, value);
     }
 
     public boolean isGliding() {
-        return this.getDataFlag(DATA_FLAGS, DATA_FLAG_GLIDING);
+        return this.gliding;
     }
 
     public void setGliding() {
@@ -702,11 +711,12 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public void setGliding(boolean value) {
+        this.gliding = value;
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_GLIDING, value);
     }
 
     public boolean isImmobile() {
-        return this.getDataFlag(DATA_FLAGS, DATA_FLAG_IMMOBILE);
+        return this.immobile;
     }
 
     public void setImmobile() {
@@ -714,6 +724,7 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public void setImmobile(boolean value) {
+        this.immobile = value;
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_IMMOBILE, value);
     }
 
