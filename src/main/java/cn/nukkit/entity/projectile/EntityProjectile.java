@@ -1,5 +1,6 @@
 package cn.nukkit.entity.projectile;
 
+import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockBell;
 import cn.nukkit.entity.Entity;
@@ -175,7 +176,7 @@ public abstract class EntityProjectile extends Entity {
                 }
             }
 
-            if (nearEntity != null) {
+            if (nearEntity != null && (!(nearEntity instanceof Player) || ((Player) nearEntity).getGamemode() != 3)) {
                 movingObjectPosition = MovingObjectPosition.fromEntity(nearEntity);
             }
 
