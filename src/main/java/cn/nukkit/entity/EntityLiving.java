@@ -6,6 +6,8 @@ import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockMagma;
 import cn.nukkit.entity.data.ShortEntityData;
 import cn.nukkit.entity.passive.EntityWaterAnimal;
+import cn.nukkit.entity.projectile.EntityProjectile;
+import cn.nukkit.event.entity.*;
 import cn.nukkit.event.entity.EntityDamageByChildEntityEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
@@ -14,6 +16,7 @@ import cn.nukkit.event.entity.EntityDeathEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTurtleShell;
 import cn.nukkit.level.GameRule;
+import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -57,6 +60,8 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
     protected float movementSpeed = 0.1f;
 
     protected int turtleTicks = 200;
+
+    private boolean blocking = false;
 
     @Override
     protected void initEntity() {
@@ -111,6 +116,11 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
                 return false;
             }
         }
+
+        if (this.blockedByShield(source)) {
+            return false;
+        }
+
 
         if (super.attack(source)) {
             if (source instanceof EntityDamageByEntityEvent) {
@@ -275,6 +285,7 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
 
         if (this.attackTime > 0) {
             this.attackTime -= tickDiff;
+            hasUpdate = true;
         }
 
         if (this.riding == null) {
@@ -391,5 +402,51 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
 
     public void setAirTicks(int ticks) {
         this.setDataProperty(new ShortEntityData(DATA_AIR, ticks));
+    }
+
+    protected boolean blockedByShield(EntityDamageEvent source) {
+        Entity damager = source instanceof EntityDamageByEntityEvent? ((EntityDamageByEntityEvent) source).getDamager() : null;
+        if (damager == null || !this.isBlocking()) {
+            return false;
+        }
+
+        Vector3 entityPos = damager.getPosition();
+        Vector3 direction = this.getDirectionVector();
+        Vector3 normalizedVector = this.getPosition().subtract(entityPos).normalize();
+        boolean blocked = (normalizedVector.x * direction.x) + (normalizedVector.z * direction.z) < 0.0;
+        boolean knockBack = !(damager instanceof EntityProjectile);
+        EntityDamageBlockedEvent event = new EntityDamageBlockedEvent(this, source, knockBack, true);
+        if (!blocked || !source.canBeReducedByArmor()/* || damager instanceof EntityProjectile && ((EntityProjectile) damager).getPierceLevel() > 0*/) {
+            event.setCancelled();
+        }
+
+        getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return false;
+        }
+
+        if (event.getKnockBackAttacker() && damager instanceof EntityLiving) {
+            double deltaX = damager.getX() - this.getX();
+            double deltaZ = damager.getZ() - this.getZ();
+            ((EntityLiving) damager).knockBack(this, 0, deltaX, deltaZ);
+        }
+
+        onBlock(damager, event.getAnimation());
+        return true;
+    }
+
+    protected void onBlock(Entity entity, boolean animate) {
+        if (animate) {
+            getLevel().addSound(this, Sound.ITEM_SHIELD_BLOCK);
+        }
+    }
+
+    public boolean isBlocking() {
+        return this.blocking;
+    }
+
+    public void setBlocking(boolean value) {
+        this.blocking = value;
+        this.setDataFlag(DATA_FLAGS, DATA_FLAG_BLOCKING, value);
     }
 }
