@@ -5,10 +5,12 @@ import cn.nukkit.block.Block;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
+import com.google.common.io.ByteStreams;
 import it.unimi.dsi.fastutil.ints.*;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteOrder;
@@ -58,9 +60,8 @@ public class GlobalBlockPalette {
 
             try(BufferedInputStream buffered = new BufferedInputStream(stream)) {
                 //noinspection unchecked
-                tag = (ListTag<CompoundTag>) NBTIO.readTag(buffered, ByteOrder.LITTLE_ENDIAN, false);
+                tag = (ListTag<CompoundTag>) NBTIO.readTag(new ByteArrayInputStream(ByteStreams.toByteArray(stream)), ByteOrder.LITTLE_ENDIAN, false);
             }
-
         } catch (IOException e) {
             throw new AssertionError(e);
         }
@@ -75,6 +76,7 @@ public class GlobalBlockPalette {
                     legacyStates = state.getList("LegacyStates", CompoundTag.class).getAll();
                 }
             }
+
 
             String name = state.getCompound("block").getString("name");
 

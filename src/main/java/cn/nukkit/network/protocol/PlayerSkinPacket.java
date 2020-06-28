@@ -36,8 +36,6 @@ public class PlayerSkinPacket extends DataPacket {
         putSkin(skin);
         putString(newSkinName);
         putString(oldSkinName);
-        if (protocol >= 390) {
-            putBoolean(skin.isTrusted());
-        }
+        putBoolean(skin.isTrusted());
     }
 }
