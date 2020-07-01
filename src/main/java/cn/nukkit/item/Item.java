@@ -321,6 +321,8 @@ public class Item implements Cloneable, BlockID, ItemID {
 
             list[HONEYCOMB] = ItemHoneycomb.class; //736
             list[HONEY_BOTTLE] = ItemHoneyBottle.class; //737
+            
+            list[CHAIN] = ItemChain.class; //758
 
             for (int i = 0; i < 256; ++i) {
                 if (Block.list[i] != null) {
