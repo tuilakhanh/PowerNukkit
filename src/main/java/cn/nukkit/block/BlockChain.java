@@ -47,6 +47,16 @@ public class BlockChain extends BlockThin {
     public int getToolType() {
         return ItemTool.TYPE_PICKAXE;
     }
+    
+    @Override
+    public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
+        if (down().getId() != Block.AIR) {
+            getLevel().setBlock(block, this, true, true);
+
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public Item toItem() {
