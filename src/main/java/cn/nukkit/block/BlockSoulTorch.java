@@ -9,6 +9,9 @@ import cn.nukkit.utils.BlockColor;
 import cn.nukkit.utils.Faceable;
 
 /**
+ * BlockSoulTorch.java was made by using BlockTorch.java
+ */
+/**
  * Created on 2015/12/2 by xtypr.
  * Package cn.nukkit.block in project Nukkit .
  */
