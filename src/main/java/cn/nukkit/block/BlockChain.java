@@ -24,7 +24,7 @@ public class BlockChain extends BlockThin {
 
     @Override
     public int getId() {
-        return CHAIN;
+        return CHAIN_BLOCK;
     }
 
     @Override
