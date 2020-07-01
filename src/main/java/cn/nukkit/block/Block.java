@@ -36,6 +36,7 @@ import java.util.function.Predicate;
  * Nukkit Project
  */
 public abstract class Block extends Position implements Metadatable, Cloneable, AxisAlignedBB, BlockID {
+
     public static final int MAX_BLOCK_ID = 600;
     public static final int DATA_BITS = 6;
     public static final int DATA_SIZE = 1 << DATA_BITS;
@@ -442,8 +443,11 @@ public abstract class Block extends Position implements Metadatable, Cloneable, 
             list[BEEHIVE] = BlockBeehive.class; //474
             list[HONEY_BLOCK] = BlockHoney.class; //475
             list[HONEYCOMB_BLOCK] = BlockHoneycombBlock.class; //476
+
+            list[NETHERITE_BLOCK] = BlockNetherite.class; //525
             
             initializing = true;
+          
             for (int id = 0; id < MAX_BLOCK_ID; id++) {
                 Class c = list[id];
                 if (c != null) {
@@ -856,6 +860,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable, 
                 return 6.0;
             case ItemTool.TIER_DIAMOND:
                 return 8.0;
+            case ItemTool.TIER_NETHERITE:
+                return 9.0;
             case ItemTool.TIER_GOLD:
                 return 12.0;
             default:
@@ -965,6 +971,9 @@ public abstract class Block extends Position implements Metadatable, Cloneable, 
                         break;
                     case ItemTool.TIER_DIAMOND:
                         base /= 8;
+                        break;
+                    case ItemTool.TIER_NETHERITE:
+                        base /= 9;
                         break;
                     case ItemTool.TIER_GOLD:
                         base /= 12;

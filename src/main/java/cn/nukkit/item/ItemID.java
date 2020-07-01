@@ -266,4 +266,17 @@ public interface ItemID {
 
     int HONEYCOMB = 736;
     int HONEY_BOTTLE = 737;
+
+
+    int NETHERITE_INGOT = 742; //742
+    int NETHERITE_SWORD = 743; //743
+    int NETHERITE_SHOVEL = 744; //744
+    int NETHERITE_PICKAXE = 745; //745
+    int NETHERITE_AXE = 746; //746
+    int NETHERITE_HOE = 747; //747
+    int NETHERITE_HELMET = 748; //748
+    int NETHERITE_CHESTPLATE = 749; //749
+    int NETHERITE_LEGGINGS = 750; //750
+    int NETHERITE_BOOTS = 751; //751
+    int NETHERITE_SCRAP = 752; //752
 }
