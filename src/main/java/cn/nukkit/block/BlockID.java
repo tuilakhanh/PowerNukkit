@@ -412,5 +412,6 @@ public interface BlockID {
     int BEEHIVE = 474;
     int HONEY_BLOCK = 475;
     int HONEYCOMB_BLOCK = 476;
-
+    
+    int SOUL_LANTERN = 524;
 }
