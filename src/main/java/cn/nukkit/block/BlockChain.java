@@ -73,4 +73,10 @@ public class BlockChain extends BlockThin {
     public boolean canHarvestWithHand() {
         return false;
     }
+    
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
+    
 }
