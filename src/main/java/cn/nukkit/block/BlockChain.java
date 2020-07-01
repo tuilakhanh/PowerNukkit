@@ -63,10 +63,10 @@ public class BlockChain extends BlockThin {
         }
     }
 
-    /*@Override
+    @Override
     public BlockColor getColor() {
-        return BlockColor.IRON_BLOCK_COLOR;
-    }*/
+        return BlockColor.BLACK_BLOCK_COLOR;
+    }
 
     @Override
     public boolean canHarvestWithHand() {
