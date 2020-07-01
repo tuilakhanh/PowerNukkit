@@ -1,6 +1,7 @@
 package cn.nukkit.block;
 
 import cn.nukkit.Player;
+import cn.nukkit.api.Since;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.math.BlockFace;
@@ -93,12 +94,13 @@ public class BlockEndPortalFrame extends BlockTransparentMeta implements Faceabl
             this.setDamage(this.getDamage() + 4);
             this.getLevel().setBlock(this, this, true, true);
             this.getLevel().addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_BLOCK_END_PORTAL_FRAME_FILL);
-            this.createPortal();
+            //this.createPortal(); TODO Re-enable this after testing
             return true;
         }
         return false;
     }
 
+    @Since("1.3.0.0-PN")
     public void createPortal() {
         Vector3 centerSpot = this.searchCenter();
         if(centerSpot != null) {
