@@ -500,6 +500,7 @@ public class Server {
 
         this.network.registerInterface(new RakNetInterface(this));
 
+        this.pluginManager.loadPowerNukkitPlugins();
         this.pluginManager.loadPlugins(this.pluginPath);
 
         this.enablePlugins(PluginLoadOrder.STARTUP);
@@ -715,7 +716,7 @@ public class Server {
         } else {
             try {
                 byte[] data = Binary.appendBytes(payload);
-                this.broadcastPacketsCallback(Network.deflate_raw(data, this.networkCompressionLevel), targets, forceSync);
+                this.broadcastPacketsCallback(Network.deflateRaw(data, this.networkCompressionLevel), targets, forceSync);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

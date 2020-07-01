@@ -164,12 +164,14 @@ public class BlockStorage {
         blockDataHyperA[index] = data3;
         blockDataHyperB[index] = data4;
         
-        hasBlockDataExtras |= data2 > 0;
-        hasBlockDataHyperA |= data3 > 0;
-        hasBlockDataHyperB |= data4 > 0;
+        hasBlockDataExtras |= data2 != 0;
+        hasBlockDataHyperA |= data3 != 0;
+        hasBlockDataHyperB |= data4 != 0;
         hasBlockIds |= data1 != 0 || hasBlockDataExtras || hasBlockDataHyperA || hasBlockDataHyperB;
     }
     
+    @PowerNukkitOnly
+    @Since("1.3.0.0-PN")
     public void setBlock(int x, int y, int z, int id, int data) {
         int index = getIndex(x, y, z);
         setBlockId(index, id);
@@ -284,6 +286,8 @@ public class BlockStorage {
         hasBlockIds |= block != 0 || hasBlockIdExtras || hasBlockDataExtras;
     }
 
+    @PowerNukkitOnly
+    @Since("1.3.0.0-PN")
     public int[] getBlockState(int x, int y, int z) {
         return getBlockState(getIndex(x, y, z));
     }

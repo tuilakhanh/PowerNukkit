@@ -22,8 +22,10 @@ import cn.nukkit.metadata.Metadatable;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.utils.BlockColor;
+import cn.nukkit.utils.InvalidBlockDamageException;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,7 +36,7 @@ import java.util.function.Predicate;
  * Nukkit Project
  */
 public abstract class Block extends Position implements Metadatable, Cloneable, AxisAlignedBB, BlockID {
-    public static final int MAX_BLOCK_ID = 512;
+    public static final int MAX_BLOCK_ID = 600;
     public static final int DATA_BITS = 6;
     public static final int DATA_SIZE = 1 << DATA_BITS;
     public static final int DATA_MASK = DATA_SIZE - 1;
@@ -62,6 +64,14 @@ public abstract class Block extends Position implements Metadatable, Cloneable, 
     public int layer;
 
     protected Block() {}
+    
+    private static boolean initializing;
+    
+    @PowerNukkitOnly
+    @Since("1.3.0.0-PN")
+    public static boolean isInitializing() {
+        return initializing;
+    }
 
     @SuppressWarnings("unchecked")
     public static void init() {
@@ -432,7 +442,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable, 
             list[BEEHIVE] = BlockBeehive.class; //474
             list[HONEY_BLOCK] = BlockHoney.class; //475
             list[HONEYCOMB_BLOCK] = BlockHoneycombBlock.class; //476
-
+            
+            initializing = true;
             for (int id = 0; id < MAX_BLOCK_ID; id++) {
                 Class c = list[id];
                 if (c != null) {
@@ -443,8 +454,20 @@ public abstract class Block extends Position implements Metadatable, Cloneable, 
                             Constructor constructor = c.getDeclaredConstructor(int.class);
                             constructor.setAccessible(true);
                             for (int data = 0; data < (1 << DATA_BITS); ++data) {
-                                Block b = (Block) constructor.newInstance(data);
                                 int fullId = (id << DATA_BITS) | data;
+                                Block b;
+                                try {
+                                    b = (Block) constructor.newInstance(data);
+                                    if (b.getDamage() != data) {
+                                        b = new BlockUnknown(id, data);
+                                    }
+                                } catch (InvocationTargetException wrapper) {
+                                    Throwable uncaught = wrapper.getTargetException();
+                                    if (!(uncaught instanceof InvalidBlockDamageException)) {
+                                        Server.getInstance().getLogger().error("Error while registering " + c.getName()+" with meta "+data, uncaught);
+                                    }
+                                    b = new BlockUnknown(id, data);
+                                }
                                 fullList[fullId] = b;
                                 fullLight[fullId] = b.getLightLevel();
                             }
@@ -494,6 +517,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable, 
                     }
                 }
             }
+            initializing = false;
         }
     }
 

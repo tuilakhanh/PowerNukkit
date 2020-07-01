@@ -6,12 +6,18 @@ import cn.nukkit.api.PowerNukkitDifference;
 import cn.nukkit.api.PowerNukkitOnly;
 import cn.nukkit.api.Since;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemBlock;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.level.Level;
+import cn.nukkit.level.Position;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
+import cn.nukkit.math.BlockFace.Axis;
+import cn.nukkit.math.BlockFace.AxisDirection;
 import cn.nukkit.math.SimpleAxisAlignedBB;
 import cn.nukkit.utils.BlockColor;
+import cn.nukkit.utils.Faceable;
+import cn.nukkit.utils.InvalidBlockDamageException;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.EnumMap;
@@ -23,10 +29,16 @@ import static cn.nukkit.utils.BlockColor.*;
 /**
  * author: MagicDroidX
  * Nukkit Project
+ * @apiNote Implements BlockConnectable only on PowerNukkit
  */
-@PowerNukkitDifference(info = "Extends BlockTransparentHyperMeta instead of BlockTransparentMeta", since = "1.3.0.0-PN")
+@PowerNukkitDifference(info = "Extends BlockTransparentHyperMeta instead of BlockTransparentMeta, implements BlockConnectable only on PowerNukkit", since = "1.3.0.0-PN")
 @Log4j2
-public class BlockWall extends BlockTransparentHyperMeta {
+public class BlockWall extends BlockTransparentHyperMeta implements BlockConnectable {
+    private static final boolean SHOULD_FAIL = false; 
+    private static final boolean SHOULD_VALIDATE_META = true;
+    private static final double MIN_POST_BB =  5.0/16;
+    private static final double MAX_POST_BB = 11.0/16;
+    
     @Deprecated
     @DeprecationDetails(reason = "No longer matches the meta directly", replaceWith = "WallType.COBBLESTONE", since = "1.3.0.0-PN")
     public static final int NONE_MOSSY_WALL = 0;
@@ -34,18 +46,64 @@ public class BlockWall extends BlockTransparentHyperMeta {
     @Deprecated
     @DeprecationDetails(reason = "No longer matches the meta directly", replaceWith = "WallType.MOSSY_COBBLESTONE", since = "1.3.0.0-PN")
     public static final int MOSSY_WALL = 1;
+    
+    private static final int[] INVALID_META_COMBINATIONS = {
+            0b0_0000_0011_0000,
+            0b0_0000_1100_0000,
+            0b0_0011_0000_0000,
+            0b0_1100_0000_0000,
+            0b0_0000_0000_1110,
+            0b0_0000_0000_1111,
+    };
 
     public BlockWall() {
         this(0);
     }
 
+    @PowerNukkitDifference(since = "1.3.0.0-PN", info = "If an invalid metadata is given, it will remove the invalid bits automatically")
     public BlockWall(int meta) {
-        super(meta);
+        setDamage(meta);
     }
 
     @Override
     public int getId() {
         return STONE_WALL;
+    }
+
+    @PowerNukkitDifference(since = "1.3.0.0-PN", info = "If an invalid metadata is given, it will remove the invalid bits automatically")
+    @Override
+    public void setDamage(int meta) {
+        if (!SHOULD_VALIDATE_META) {
+            super.setDamage(meta);
+        }
+        
+        if (getDamage() == meta) {
+            return;
+        }
+        
+        for (int invalidMetaCombination : INVALID_META_COMBINATIONS) {
+            if ((meta & invalidMetaCombination) != invalidMetaCombination) {
+                continue;
+            }
+            
+            InvalidBlockDamageException exception = new InvalidBlockDamageException(getId(), meta, getDamage());
+            if (SHOULD_FAIL) {
+                throw exception;
+            }
+            
+            if (!isInitializing()) {
+                log.warn("Tried to set an invalid wall meta, the bits " + invalidMetaCombination + " were removed." + (level != null ? " " + getLocation() : ""), exception);
+            }
+            
+            meta = meta & ~invalidMetaCombination;
+        }
+        
+        super.setDamage(meta);
+    }
+
+    @Override
+    public Item toItem() {
+        return new ItemBlock(this, getDamage() & 0xF);
     }
 
     @Override
@@ -75,29 +133,26 @@ public class BlockWall extends BlockTransparentHyperMeta {
         return getWallType().color;
     }
 
-    private boolean shouldBePostBasedOnAbove(Block above) {
-        switch (above.getId()) {
-            case COBBLE_WALL:
-                return ((BlockWall) above).isWallPost();
-            case GLASS_PANE:
-                return !((BlockGlassPane) above).isStraight();
-            case FLOWER_POT_BLOCK:
-                return true;
-            default:
-                return false;
-        }
-    }
-
     private boolean shouldBeTall(Block above, BlockFace face) {
         switch (above.getId()) {
+            case AIR:
+            case SKULL_BLOCK:
+                return false;
+                
+            // If the bell is standing and follow the path, make it tall
+            case BELL:
+                BlockBell bell = (BlockBell) above;
+                return bell.getAttachmentType() == BlockBell.TYPE_ATTACHMENT_STANDING
+                        && bell.getBlockFace().getAxis() != face.getAxis();
             case COBBLE_WALL:
                 return ((BlockWall) above).getConnectionType(face) != WallConnectionType.NONE;
-            case GLASS_PANE:
-                return ((BlockGlassPane) above).isConnected(face);
-            case STAINED_GLASS_PANE:
-                return true;
             default:
-                return shouldBeTallBasedOnBoundingBox(above, face);
+                if (above instanceof BlockConnectable) {
+                    return ((BlockConnectable) above).isConnected(face);
+                } else if (above instanceof BlockPressurePlateBase || above instanceof BlockStairs) {
+                    return true;
+                }
+                return above.isSolid() && !above.isTransparent() || shouldBeTallBasedOnBoundingBox(above, face);
         }
     }
     
@@ -106,29 +161,25 @@ public class BlockWall extends BlockTransparentHyperMeta {
         if (boundingBox == null) {
             return false;
         }
-        boundingBox = boundingBox.getOffsetBoundingBox(above.x, above.y, above.z);
+        boundingBox = boundingBox.getOffsetBoundingBox(-above.x, -above.y, -above.z);
         if (boundingBox.getMinY() > 0) {
             return false;
         }
         int offset = face.getXOffset();
         if (offset < 0) {
-            return boundingBox.getMinX() == 0 && boundingBox.getMaxX() <= 0.5
-                    && boundingBox.getMinZ() < 0.25 && boundingBox.getMaxZ() > 0.75
-                    ;
+            return boundingBox.getMinX() < MIN_POST_BB /*&& MIN_POST_BB <= boundingBox.getMaxX()*/
+                    && boundingBox.getMinZ() < MIN_POST_BB && MAX_POST_BB < boundingBox.getMaxZ();
         } else if (offset > 0) {
-            return boundingBox.getMaxX() == 0 && boundingBox.getMinX() <= 0.5
-                    && boundingBox.getMinZ() < 0.25 && boundingBox.getMaxZ() > 0.75
-                    ;
+            return /*boundingBox.getMinX() <= MAX_POST_BB &&*/ MAX_POST_BB < boundingBox.getMaxX()
+                    && MAX_POST_BB < boundingBox.getMaxZ() && boundingBox.getMinZ() < MAX_POST_BB; 
         } else {
             offset = face.getZOffset();
             if (offset < 0) {
-                return boundingBox.getMinZ() == 0 && boundingBox.getMaxZ() <= 0.5
-                        && boundingBox.getMinX() < 0.25 && boundingBox.getMaxX() > 0.75
-                        ;
+                return boundingBox.getMinZ() < MIN_POST_BB /*&& MIN_POST_BB <= boundingBox.getMaxZ()*/
+                        && boundingBox.getMinX() < MIN_POST_BB && MIN_POST_BB < boundingBox.getMaxX();
             } else if (offset > 0) {
-                return boundingBox.getMaxZ() == 0 && boundingBox.getMinZ() <= 0.5
-                        && boundingBox.getMinX() < 0.25 && boundingBox.getMaxX() > 0.75
-                        ;
+                return /*boundingBox.getMinZ() <= MAX_POST_BB &&*/ MAX_POST_BB < boundingBox.getMaxZ()
+                        && MAX_POST_BB < boundingBox.getMaxX() && boundingBox.getMinX() < MAX_POST_BB;
             }
         }
         return false;
@@ -142,19 +193,22 @@ public class BlockWall extends BlockTransparentHyperMeta {
         setWallPost(true);
         
         Block above = up(1, 0);
-        boolean forcePost = shouldBePostBasedOnAbove(above);
 
         for (BlockFace blockFace : BlockFace.Plane.HORIZONTAL) {
             Block side = getSideAtLayer(0, blockFace);
             if (canConnect(side)) {
                 try {
-                    connect(blockFace, above, forcePost);
+                    connect(blockFace, above, false);
                 } catch (RuntimeException e) {
                     log.error("Failed to connect the block "+this+" at "+getLocation()+" to "+blockFace+" which is "+side+" at "+side.getLocation());
                     throw e;
                 }
+            } else {
+                disconnect(blockFace);
             }
         }
+        
+        recheckPostConditions(above);
         
         return getDamage() != previousMeta;
     }
@@ -203,7 +257,7 @@ public class BlockWall extends BlockTransparentHyperMeta {
     @PowerNukkitOnly
     @Since("1.3.0.0-PN")
     public void setWallType(WallType type) {
-        setDamage((getDamage() & ~0xF) | type.ordinal());
+        setDamage((getDamage() & ~0xF) | (type.ordinal() & 0xF));
     }
     
     @PowerNukkitOnly
@@ -214,7 +268,7 @@ public class BlockWall extends BlockTransparentHyperMeta {
 
     @PowerNukkitOnly
     @Since("1.3.0.0-PN")
-    public Map<BlockFace, WallConnectionType> getConnections() {
+    public Map<BlockFace, WallConnectionType> getWallConnections() {
         EnumMap<BlockFace, WallConnectionType> connections = new EnumMap<>(BlockFace.class);
         for (BlockFace blockFace : BlockFace.Plane.HORIZONTAL) {
             WallConnectionType connectionType = getConnectionType(blockFace);
@@ -225,15 +279,19 @@ public class BlockWall extends BlockTransparentHyperMeta {
         return connections;
     }
     
+    private int getBitIndex(BlockFace face) {
+        assert face.getHorizontalIndex() >= 0;
+        return 4 + face.getHorizontalIndex() * 2;
+    }
+    
     @PowerNukkitOnly
     @Since("1.3.0.0-PN")
     public WallConnectionType getConnectionType(BlockFace blockFace) {
-        int horizontalIndex = blockFace.getHorizontalIndex();
-        if (horizontalIndex < 0) {
+        if (blockFace.getHorizontalIndex() < 0) {
             return WallConnectionType.NONE;
         }
 
-        int bitIndex = 4 + horizontalIndex * 2;
+        int bitIndex = getBitIndex(blockFace);
         int typeOrdinal = getDamage() >> bitIndex & 0x3;
         return WallConnectionType.VALUES[typeOrdinal];
     }
@@ -242,19 +300,12 @@ public class BlockWall extends BlockTransparentHyperMeta {
     @PowerNukkitOnly
     @Since("1.3.0.0-PN")
     public boolean setConnection(BlockFace blockFace, WallConnectionType type) {
-        return setConnection(blockFace, type, shouldBePostBasedOnAbove(up(1, 0)));
-    }
-    
-    @PowerNukkitOnly
-    @Since("1.3.0.0-PN")
-    public boolean setConnection(BlockFace blockFace, WallConnectionType type, boolean forcePost) {
-        int horizontalIndex = blockFace.getHorizontalIndex();
-        if (horizontalIndex < 0) {
+        if (blockFace.getHorizontalIndex() < 0) {
             return false;
         }
         
         // Locate the 2 bit position
-        int bitIndex = 4 + horizontalIndex * 2;
+        int bitIndex = getBitIndex(blockFace);
         
         // Clear the 2 bits
         int damage = getDamage() & ~(0x3 << bitIndex);
@@ -262,28 +313,121 @@ public class BlockWall extends BlockTransparentHyperMeta {
         // Set the 2 bits values based on the connection type
         damage |= type.ordinal() << bitIndex;
         
-        // If nothing is connected
-        int connections = damage & 0xFF0;
-        if (forcePost || connections == 0x000) {
-            // Makes it become a post
-            damage |= 0x1000;
-        }
-        
         // Save in memory
         setDamage(damage);
 
-        // If the wall is straight, remove the post bit
-        if (!forcePost && isSameHeightStraight()) {
-            setWallPost(false);
+        return true;
+    }
+
+    /**
+     * @return true if it should be a post
+     */
+    @PowerNukkitDifference
+    @Since("1.3.0.0-PN")
+    public void autoUpdatePostFlag() {
+        setWallPost(recheckPostConditions(up(1, 0)));
+    }
+    
+    private boolean recheckPostConditions(Block above) {
+        // If nothing is connected, it should be a post
+        if ((getDamage() & 0xFF0) == 0x000) {
+            return true;
         }
         
-        return true;
+        // If it's not straight, it should be a post
+        Map<BlockFace, WallConnectionType> connections = getWallConnections();
+        if (connections.size() != 2) {
+            return true;
+        }
+
+        Iterator<Map.Entry<BlockFace, WallConnectionType>> iterator = connections.entrySet().iterator();
+        Map.Entry<BlockFace, WallConnectionType> entryA = iterator.next();
+        Map.Entry<BlockFace, WallConnectionType> entryB = iterator.next();
+        if (entryA.getValue() != entryB.getValue() || entryA.getKey().getOpposite() != entryB.getKey()) {
+            return true;
+        }
+
+        Axis axis = entryA.getKey().getAxis(); 
+        
+        switch (above.getId()) {
+            // These special blocks forces walls to become a post
+            case FLOWER_POT_BLOCK:
+            case SKULL_BLOCK:
+            case CONDUIT:
+            case STANDING_BANNER:
+                return true;
+                
+            // End rods make it become a post if it's placed on the wall
+            case END_ROD:
+                if (((Faceable) above).getBlockFace() == BlockFace.UP) {
+                    return true;
+                }
+                break;
+
+            // If the wall above is a post, it should also be a post
+            case COBBLE_WALL:
+                if (((BlockWall) above).isWallPost()) {
+                    return true;
+                }
+                break;
+                
+            // If the bell is standing and don't follow the path, make it a post
+            case BELL:
+                BlockBell bell = (BlockBell) above;
+                if (bell.getAttachmentType() == BlockBell.TYPE_ATTACHMENT_STANDING
+                        && bell.getBlockFace().getAxis() == axis) {
+                    return true;
+                }
+                
+                break;
+                
+            default:
+                if (above instanceof BlockLantern) {
+                    // Lanterns makes this become a post if they are not hanging
+
+                    if (above.getDamage() == 0) { // Not hanging
+                        return true;
+                    }
+
+                } else if (above.getId() == LEVER || above instanceof BlockTorch || above instanceof BlockButton) {
+                    // These blocks make this become a post if they are placed down (facing up)
+
+                    if (((Faceable) above).getBlockFace() == BlockFace.UP) {
+                        return true;
+                    }
+
+                } else if (above instanceof BlockFenceGate) {
+                    // If the gate don't follow the path, make it a post
+                    
+                    if (((Faceable) above).getBlockFace().getAxis() == axis) {
+                        return true;
+                    }
+                    
+                } else if (above instanceof BlockConnectable) {
+                    // If the connectable block above don't share 2 equal connections, then this should be a post
+
+                    int shared = 0;
+                    for (BlockFace connection : ((BlockConnectable) above).getConnections()) {
+                        if (connections.containsKey(connection) && ++shared == 2) {
+                            break;
+                        }
+                    }
+
+                    if (shared < 2) {
+                        return true;
+                    }
+
+                }
+        }
+
+        // Sign posts always makes the wall become a post
+        return above instanceof BlockSignPost;
     }
 
     @PowerNukkitOnly
     @Since("1.3.0.0-PN")
     public boolean isSameHeightStraight() {
-        Map<BlockFace, WallConnectionType> connections = getConnections();
+        Map<BlockFace, WallConnectionType> connections = getWallConnections();
         if (connections.size() != 2) {
             return false;
         }
@@ -296,32 +440,30 @@ public class BlockWall extends BlockTransparentHyperMeta {
 
     @PowerNukkitOnly
     @Since("1.3.0.0-PN")
-    public boolean isAnyHeightStraight() {
-        Map<BlockFace, WallConnectionType> connections = getConnections();
-        if (connections.size() != 2) {
-            return false;
-        }
-
-        Iterator<BlockFace> iterator = connections.keySet().iterator();
-        BlockFace a = iterator.next();
-        BlockFace b = iterator.next();
-        return a.getOpposite() == b;
+    public boolean connect(BlockFace blockFace) {
+        return connect(blockFace, true);
     }
     
     @PowerNukkitOnly
     @Since("1.3.0.0-PN")
-    public boolean connect(BlockFace blockFace) {
+    public boolean connect(BlockFace blockFace, boolean recheckPost) {
         if (blockFace.getHorizontalIndex() < 0) {
             return false;
         }
 
         Block above = getSideAtLayer(0, BlockFace.UP);
-        return connect(blockFace, above, shouldBePostBasedOnAbove(above));
+        return connect(blockFace, above, recheckPost);
     }
 
-    private boolean connect(BlockFace blockFace, Block above, boolean forcePost) {
+    private boolean connect(BlockFace blockFace, Block above, boolean recheckPost) {
         WallConnectionType type = shouldBeTall(above, blockFace)? WallConnectionType.TALL : WallConnectionType.SHORT;
-        return setConnection(blockFace, type, forcePost);
+        if (setConnection(blockFace, type)) {
+            if (recheckPost) {
+                recheckPostConditions(above);
+            }
+            return true;
+        }
+        return false;
     }
     
     @PowerNukkitOnly
@@ -331,7 +473,11 @@ public class BlockWall extends BlockTransparentHyperMeta {
             return false;
         }
         
-        return setConnection(blockFace, WallConnectionType.NONE);
+        if (setConnection(blockFace, WallConnectionType.NONE)) {
+            autoUpdatePostFlag();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -374,17 +520,43 @@ public class BlockWall extends BlockTransparentHyperMeta {
         );
     }
 
-    @PowerNukkitDifference(info = "Will connect to glass panes", since = "1.3.0.0-PN")
+    @PowerNukkitDifference(info = "Will connect to glass panes, iron bars and fence gates", since = "1.3.0.0-PN")
+    @Override
     public boolean canConnect(Block block) {
         switch (block.getId()) {
             case COBBLE_WALL:
-            case FENCE_GATE:
             case GLASS_PANE:
             case STAINED_GLASS_PANE:
+            case IRON_BARS:
                 return true;
             default:
+                if (block instanceof BlockFenceGate) {
+                    BlockFenceGate fenceGate = (BlockFenceGate) block;
+                    return fenceGate.getBlockFace().getAxis() != calculateAxis(block);
+                } else if (block instanceof BlockStairs) {
+                    return ((BlockStairs) block).getBlockFace() == calculateFace(block);
+                }
                 return block.isSolid() && !block.isTransparent();
         }
+    }
+    
+    private Axis calculateAxis(Block side) {
+        Position vector = side.subtract(this);
+        return vector.x != 0? Axis.X : vector.z != 0? Axis.Z : Axis.Y;
+    }
+    
+    private BlockFace calculateFace(Block side) {
+        Position vector = side.subtract(this);
+        Axis axis = vector.x != 0? Axis.X : vector.z != 0? Axis.Z : Axis.Y;
+        double direction = axis == Axis.X? vector.x : axis == Axis.Y? vector.y : vector.z;
+        return BlockFace.fromAxis(direction < 0? AxisDirection.NEGATIVE : AxisDirection.POSITIVE, axis);
+    }
+
+    @PowerNukkitOnly
+    @Since("1.3.0.0-PN")
+    @Override
+    public boolean isConnected(BlockFace face) {
+        return getConnectionType(face) != WallConnectionType.NONE;
     }
 
     @Override
