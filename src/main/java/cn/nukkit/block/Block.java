@@ -446,6 +446,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable, 
             list[SOUL_TORCH] = BlockSoulTorch.class; //523
             list[SOUL_LANTERN] = BlockSoulLantern.class; //524
             
+            list[CHAIN] = BlockChain.class; //541
+            
             initializing = true;
             
             for (int id = 0; id < MAX_BLOCK_ID; id++) {
