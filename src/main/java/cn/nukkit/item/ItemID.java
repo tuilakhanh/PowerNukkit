@@ -266,4 +266,7 @@ public interface ItemID {
 
     int HONEYCOMB = 736;
     int HONEY_BOTTLE = 737;
+    
+    int CHAIN = 758;
+    
 }
