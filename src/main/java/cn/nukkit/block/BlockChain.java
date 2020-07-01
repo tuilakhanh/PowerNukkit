@@ -13,7 +13,7 @@ import cn.nukkit.utils.BlockColor;
  * Created on 2015/12/6 by xtypr.
  * Package cn.nukkit.block in project Nukkit .
  */
-public class BlockChain extends BlockThin {
+public class BlockChain extends BlockTransparent {
 
     public BlockChain() {
     }
@@ -82,11 +82,6 @@ public class BlockChain extends BlockThin {
     @Override
     public boolean canHarvestWithHand() {
         return false;
-    }
-    
-    @Override
-    public boolean isTransparent() {
-        return true;
     }
     
 }
