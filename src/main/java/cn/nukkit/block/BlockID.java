@@ -416,6 +416,6 @@ public interface BlockID {
     int SOUL_TORCH = 523;
     int SOUL_LANTERN = 524;
     
-    int CHAIN = 541;
+    int CHAIN_BLOCK = 541;
     
 }
