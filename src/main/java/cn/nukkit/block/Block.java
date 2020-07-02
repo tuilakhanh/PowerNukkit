@@ -458,6 +458,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable, 
             list[WARPED_WOOD_STAIRS] = BlockStairsWarped.class; //510
             list[CRIMSON_FENCE] = BlockFenceCrimson.class; //511
             list[WARPED_FENCE] = BlockFenceWarped.class; //512
+            list[FENCE_GATE_CRIMSON] = BlockFenceGateCrimson.class; //513
+            list[FENCE_GATE_WARPED] = BlockFenceGateWarped.class; //514
             
             initializing = true;
             for (int id = 0; id < MAX_BLOCK_ID; id++) {
