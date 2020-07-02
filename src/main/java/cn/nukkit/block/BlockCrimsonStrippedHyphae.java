@@ -5,9 +5,9 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.math.BlockFace;
 
-public class BlockCrimsonHyphae extends BlockSolid {
+public class BlockCrimsonStrippedHyphae extends BlockSolid {
     
-    public BlockCrimsonHyphae() {
+    public BlockCrimsonStrippedHyphae() {
     }
     
     @Override
