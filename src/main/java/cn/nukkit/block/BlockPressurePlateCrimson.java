@@ -19,4 +19,14 @@ public class BlockPressurePlateCrimson extends BlockPressurePlateWood {
     public String getName() {
         return "Crimson Pressure Plate";
     }
+    
+    @Override
+    public int getBurnChance() {
+        return 0;
+    }
+    
+    @Override
+    public int getBurnAbility() {
+        return 0;
+    }
 }
