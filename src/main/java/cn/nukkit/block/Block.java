@@ -447,6 +447,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable, 
             list[WARPED_PLANKS] = BlockWarpedPlanks.class; //498
             list[CRIMSON_DOOR_BLOCK] = BlockDoorCrimson.class; //499
             list[WARPED_DOOR_BLOCK] = BlockDoorWarped.class; //500
+            list[CRIMSON_TRAPDOOR] = BlockTrapdoorCrimson.class; //501
+            list[WARPED_TRAPDOOR] = BlockTrapdoorWarped.class; //502
             
             initializing = true;
             for (int id = 0; id < MAX_BLOCK_ID; id++) {
