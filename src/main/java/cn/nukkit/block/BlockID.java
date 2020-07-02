@@ -437,8 +437,8 @@ public interface BlockID {
     //int STRIPPED_WARPED_STEM = 496;
     int CRIMSON_PLANKS = 497;
     int WARPED_PLANKS = 498;
-    int CRIMSON_DOOR = 499;
-    int WARPED_DOOR = 500;
+    int CRIMSON_DOOR_BLOCK = 499;
+    int WARPED_DOOR_BLOCK = 500;
     int CRIMSON_TRAPDOOR = 501; 
     int WARPED_TRAPDOOR = 502;
     // 503
