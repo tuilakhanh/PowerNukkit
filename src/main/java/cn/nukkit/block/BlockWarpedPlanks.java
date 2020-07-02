@@ -3,13 +3,13 @@ package cn.nukkit.block;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.utils.BlockColor;
 
-public class WarpedPlanks extends BlockSolid {
+public class BlockWarpedPlanks extends BlockSolid {
 
-    public WarpedPlanks() {
+    public BlockWarpedPlanks() {
         this(0);
     }
 
-    public WarpedPlanks(int meta) {
+    public BlockWarpedPlanks(int meta) {
         super(meta);
     }
 
