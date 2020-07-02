@@ -420,4 +420,9 @@ public interface BlockID {
     int CRIMSOM_TRAPDOOR = 501;
     int WARPED_TRAPDOOR = 502;
     
+    int CRIMSON_STANDING_SIGN = 505;
+    int CRIMSON_WALL_SIGN = 506;
+    int WARPED_STANDING_SIGN = 507;
+    int WARPED_WALL_SIGN = 508;
+    
 }
