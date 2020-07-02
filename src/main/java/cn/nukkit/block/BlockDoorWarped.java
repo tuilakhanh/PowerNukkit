@@ -21,7 +21,7 @@ public class BlockDoorWarped extends BlockDoorWood {
 
     @Override
     public int getId() {
-        return WARPED_DOOR;
+        return WARPED_DOOR_BLOCK;
     }
 
     @Override
