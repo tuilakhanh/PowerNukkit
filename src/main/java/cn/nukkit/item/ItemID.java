@@ -267,6 +267,8 @@ public interface ItemID {
     int HONEYCOMB = 736;
     int HONEY_BOTTLE = 737;
     
+    int CRIMSON_SIGN = 753;
+    int WARPED_SIGN = 754;
     int CRIMSON_DOOR = 755;
     int WARPED_DOOR = 756;
     
