@@ -10,7 +10,7 @@ public class BlockSlabWarped extends BlockSlab {
         this(0);
     }
 
-    public BlockSlabCrimson(int meta) {
+    public BlockSlabWarped(int meta) {
         super(meta, DOUBLE_WARPED_SLAB);
     }
 
