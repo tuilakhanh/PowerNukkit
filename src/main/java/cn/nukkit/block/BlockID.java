@@ -418,8 +418,8 @@ public interface BlockID {
     //int LODESTONE = 477;
     //int CRIMSON_ROOTS = 478;
     //int WARPED_ROOTS = 479;
-    //int CRIMSON_STEM = 480;
-    //int WARPED_STEM = 481;
+    int CRIMSON_STEM = 480;
+    int WARPED_STEM = 481;
     //int WARPED_WART_BLOCK = 482; 
     //int CRIMSON_FUNGUS = 483;
     //int WARPED_FUNGUS = 484;
@@ -433,8 +433,8 @@ public interface BlockID {
     //int SOUL_FIRE = 492;
     //int NETHER_SPROUTS = 493; 
     //int TARGET = 494;
-    //int STRIPPED_CRIMSON_STEM = 495; 
-    //int STRIPPED_WARPED_STEM = 496;
+    int STRIPPED_CRIMSON_STEM = 495; 
+    int STRIPPED_WARPED_STEM = 496;
     int CRIMSON_PLANKS = 497;
     int WARPED_PLANKS = 498;
     int CRIMSON_DOOR_BLOCK = 499;
