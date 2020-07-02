@@ -415,5 +415,7 @@ public interface BlockID {
     
     int CRIMSON_PLANKS  = 497;
     int WARPED_PLANKS = 498;
+    int CRIMSOM_DOOR_BLOCK = 499;
+    int WARPED_DOOR_BLOCK = 500;
     
 }
