@@ -430,5 +430,7 @@ public interface BlockID {
     int WARPED_FENCE = 512;
     int FENCE_GATE_CRIMSON = 513;
     int FENCE_GATE_WARPED = 514;
+    int CRIMSON_BUTTON = 515;
+    int WARPED_BUTTON = 516;
     
 }
