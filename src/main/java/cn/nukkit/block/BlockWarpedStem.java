@@ -13,7 +13,7 @@ import cn.nukkit.math.BlockFace;
  * author: MagicDroidX
  * Nukkit Project
  */
-public class BlockWarpedStem extends BlockSolid 
+public class BlockWarpedStem extends BlockSolid {
 
     public BlockWarpedStem() {
     }
