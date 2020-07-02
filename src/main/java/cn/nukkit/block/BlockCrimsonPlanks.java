@@ -3,13 +3,13 @@ package cn.nukkit.block;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.utils.BlockColor;
 
-public class CrimsonPlanks extends BlockSolid {
+public class BlockCrimsonPlanks extends BlockSolid {
 
-    public CrimsonPlanks() {
+    public BlockCrimsonPlanks() {
         this(0);
     }
 
-    public CrimsonPlanks(int meta) {
+    public BlockCrimsonPlanks(int meta) {
         super(meta);
     }
 
