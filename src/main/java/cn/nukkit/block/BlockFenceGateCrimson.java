@@ -21,7 +21,7 @@ public class BlockFenceGateCrimson extends BlockFenceGate {
 
     @Override
     public int getId() {
-        return FENCE_GATE_CRIMSON;
+        return CRIMSON_FENCE_GATE;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class BlockFenceGateCrimson extends BlockFenceGate {
 
     @Override
     public Item toItem() {
-        return Item.get(Item.FENCE_GATE_CRIMSON, 0, 1);
+        return Item.get(Item.CRIMSON_FENCE_GATE, 0, 1);
     }
 
     /*@Override
