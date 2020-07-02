@@ -6,7 +6,6 @@ import cn.nukkit.utils.BlockColor;
 public class BlockCrimsonPlanks extends BlockSolid {
 
     public BlockCrimsonPlanks() {
-        this(0);
     }
 
     public BlockCrimsonPlanks(int meta) {
