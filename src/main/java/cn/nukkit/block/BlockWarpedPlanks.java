@@ -17,6 +17,11 @@ public class BlockWarpedPlanks extends BlockSolid {
     public int getId() {
         return WARPED_PLANKS;
     }
+    
+    @Override
+    public String getName() {
+        return "Warped Planks";
+    }
 
     @Override
     public double getHardness() {
