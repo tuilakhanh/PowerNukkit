@@ -21,7 +21,7 @@ public class BlockDoorCrimson extends BlockDoorWood {
 
     @Override
     public int getId() {
-        return CRIMSON_DOOR_BLOCK;
+        return CRIMSON_DOOR;
     }
 
     @Override
