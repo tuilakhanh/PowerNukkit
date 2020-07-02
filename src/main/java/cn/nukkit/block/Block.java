@@ -476,6 +476,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable, 
             
             list[WARPED_HYPHAE] = BlockWarpedHyphae.class; //553
             list[CRIMSON_HYPHAE] = BlockCrimsonHyphae.class; //554
+            list[STRIPPED_CRIMSON_HYPHAE] = BlockCrimsonStrippedHyphae.class; //555
+            list[STRIPPED_WARPED_HYPHAE] = BlockWarpedStrippedHyphae.class; //556
             
             initializing = true;
             for (int id = 0; id < MAX_BLOCK_ID; id++) {
