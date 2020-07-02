@@ -11,7 +11,7 @@ public class BlockSlabCrimson extends BlockSlab {
     }
 
     public BlockSlabCrimson(int meta) {
-        super(meta, DOUBLE_CRIMSON_SLAB);
+        super(meta, CRIMSON_DOUBLE_SLAB);
     }
 
     @Override
