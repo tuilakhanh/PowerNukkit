@@ -445,6 +445,9 @@ public abstract class Block extends Position implements Metadatable, Cloneable, 
             
             list[CRIMSON_STEM] = BlockCrimsonStem.class; //480
             list[WARPED_STEM] = BlockWarpedStem.class; //481
+            
+            list[STRIPPED_CRIMSON_STEM] = BlockCrimsonStrippedStem.class; //495
+            list[STRIPPED_WARPED_STEM] = BlockWarpedStrippedStem.class; //496
             list[CRIMSON_PLANKS] = BlockCrimsonPlanks.class; //497
             list[WARPED_PLANKS] = BlockWarpedPlanks.class; //498
             list[CRIMSON_DOOR_BLOCK] = BlockDoorCrimson.class; //499
