@@ -15,7 +15,7 @@ public class BlockStairsCrimson extends BlockStairsWood {
 
     @Override
     public int getId() {
-        return CRIMSON_WOOD_STAIRS;
+        return CRIMSON_STAIRS;
     }
 
     @Override
