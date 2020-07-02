@@ -11,7 +11,7 @@ public class BlockSlabWarped extends BlockSlab {
     }
 
     public BlockSlabWarped(int meta) {
-        super(meta, DOUBLE_WARPED_SLAB);
+        super(meta, WARPED_DOUBLE_SLAB);
     }
 
     @Override
