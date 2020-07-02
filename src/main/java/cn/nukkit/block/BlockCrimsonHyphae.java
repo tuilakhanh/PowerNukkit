@@ -52,4 +52,14 @@ public class BlockCrimsonHyphae extends BlockWood {
     public Item toItem() {
         return new ItemBlock(this);
     }
+    
+    @Override
+    public int getBurnChance() {
+        return 0;
+    }
+
+    @Override
+    public int getBurnAbility() {
+        return 0;
+    }
 }
