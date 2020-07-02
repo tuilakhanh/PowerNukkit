@@ -21,7 +21,7 @@ public class BlockFenceGateWarped extends BlockFenceGate {
 
     @Override
     public int getId() {
-        return FENCE_GATE_WARPED;
+        return WARPED_GENCE_GATE;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class BlockFenceGateWarped extends BlockFenceGate {
 
     @Override
     public Item toItem() {
-        return Item.get(Item.FENCE_GATE_WARPED, 0, 1);
+        return Item.get(Item.WARPED_FENCE_GATE, 0, 1);
     }
 
     /*@Override
