@@ -1,7 +1,6 @@
 package cn.nukkit.block;
 
 import cn.nukkit.item.Item;
-import cn.nukkit.utils.BlockColor;
 
 /**
  * BlockFenceGateWarped.java was made by using BlockFenceGate(Some Wood type).java
@@ -21,7 +20,7 @@ public class BlockFenceGateWarped extends BlockFenceGate {
 
     @Override
     public int getId() {
-        return WARPED_GENCE_GATE;
+        return WARPED_FENCE_GATE;
     }
 
     @Override
@@ -31,7 +30,7 @@ public class BlockFenceGateWarped extends BlockFenceGate {
 
     @Override
     public Item toItem() {
-        return Item.get(Item.WARPED_FENCE_GATE, 0, 1);
+        return Item.get(WARPED_FENCE_GATE, 0, 1);
     }
 
     /*@Override

@@ -1,16 +1,11 @@
 package cn.nukkit.block;
 
 import cn.nukkit.item.ItemTool;
-import cn.nukkit.utils.BlockColor;
 
 public class BlockWarpedPlanks extends BlockSolid {
 
     public BlockWarpedPlanks() {
-        this(0);
-    }
-
-    public BlockWarpedPlanks(int meta) {
-        super(meta);
+        // Does nothing
     }
 
     @Override

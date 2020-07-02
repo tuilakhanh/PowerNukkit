@@ -1,8 +1,8 @@
 package cn.nukkit.block;
 
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemBlock;
 import cn.nukkit.item.ItemTool;
-import cn.nukkit.utils.BlockColor;
 
 /**
  * BlockFenceCrimson.java was made by using BlockFence.java and BlockFenceNetherBrick.java

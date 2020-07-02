@@ -1,15 +1,11 @@
 package cn.nukkit.block;
 
 import cn.nukkit.item.ItemTool;
-import cn.nukkit.utils.BlockColor;
 
 public class BlockCrimsonPlanks extends BlockSolid {
 
     public BlockCrimsonPlanks() {
-    }
-
-    public BlockCrimsonPlanks(int meta) {
-        super(meta);
+        // Does nothing
     }
 
     @Override
