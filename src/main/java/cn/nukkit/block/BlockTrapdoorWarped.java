@@ -18,4 +18,14 @@ public class BlockTrapdoorWarped extends BlockTrapdoor {
     public String getName() {
         return "Warped Trapdoor";
     }
+    
+    @Override
+    public int getBurnChance() {
+        return 0;
+    }
+    
+    @Override
+    public int getBurnAbility() {
+        return 0;
+    }
 }
