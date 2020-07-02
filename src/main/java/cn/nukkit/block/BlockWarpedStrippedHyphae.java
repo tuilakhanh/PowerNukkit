@@ -7,7 +7,7 @@ import cn.nukkit.math.BlockFace;
 
 public class BlockWarpedStrippedHyphae extends BlockSolid {
     
-    public BlockCrimsonHyphae() {
+    public BlockWarpedStrippedHyphae() {
     }
     
     @Override
