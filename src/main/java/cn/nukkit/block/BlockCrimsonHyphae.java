@@ -5,12 +5,12 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.math.BlockFace;
 
-public class BlockWoodBark extends BlockWood {
-    public BlockWoodBark() {
+public class BlockCrimsonHyphae extends BlockWood {
+    public BlockCrimsonHyphae() {
         this(0);
     }
     
-    public BlockWoodBark(int meta) {
+    public BlockCrimsonHyphae(int meta) {
         super(meta);
     }
     
