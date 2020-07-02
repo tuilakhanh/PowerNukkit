@@ -15,7 +15,7 @@ public class BlockStairsWarped extends BlockStairsWood {
 
     @Override
     public int getId() {
-        return WARPED_WOOD_STAIRS;
+        return WARPED_STAIRS;
     }
 
     @Override
