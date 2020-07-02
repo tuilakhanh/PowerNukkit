@@ -30,4 +30,14 @@ public class BlockWarpedSignPost extends BlockSignPost {
     public Item toItem() {
         return new ItemWarpedSign();
     }
+    
+    @Override
+    public int getBurnChance() {
+        return 0;
+    }
+    
+    @Override
+    public int getBurnAbility() {
+        return 0;
+    }
 }
