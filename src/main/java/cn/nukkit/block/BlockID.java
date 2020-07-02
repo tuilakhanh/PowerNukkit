@@ -424,5 +424,7 @@ public interface BlockID {
     int CRIMSON_WALL_SIGN = 506;
     int WARPED_STANDING_SIGN = 507;
     int WARPED_WALL_SIGN = 508;
+    int CRIMSON_WOOD_STAIRS = 509;
+    int WARPED_WOOD_STAIRS = 510;
     
 }
