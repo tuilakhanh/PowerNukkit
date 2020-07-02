@@ -17,6 +17,11 @@ public class BlockCrimsonPlanks extends BlockSolid {
     public int getId() {
         return CRIMSON_PLANKS;
     }
+    
+    @Override
+    public String getName() {
+        return "Crimson Planks";
+    }
 
     @Override
     public double getHardness() {
