@@ -30,4 +30,14 @@ public class BlockCrimsonSignPost extends BlockSignPost {
     public Item toItem() {
         return new ItemCrimsonSign();
     }
+    
+    @Override
+    public int getBurnChance() {
+        return 0;
+    }
+    
+    @Override
+    public int getBurnAbility() {
+        return 0;
+    }
 }
