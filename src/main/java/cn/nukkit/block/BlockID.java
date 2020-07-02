@@ -428,5 +428,7 @@ public interface BlockID {
     int WARPED_WOOD_STAIRS = 510;
     int CRIMSON_FENCE = 511;
     int WARPED_FENCE = 512;
+    int FENCE_GATE_CRIMSON = 513;
+    int FENCE_GATE_WARPED = 514;
     
 }
