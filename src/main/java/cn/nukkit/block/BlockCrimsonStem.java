@@ -5,7 +5,6 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.BlockFace;
-import cn.nukkit.utils.Faceable;
 
 /**
  * BlockCrimsonStem.java was made by using BlockWood.java
@@ -14,14 +13,9 @@ import cn.nukkit.utils.Faceable;
  * author: MagicDroidX
  * Nukkit Project
  */
-public class BlockCrimsonStem extends BlockSolidMeta implements Faceable {
+public class BlockCrimsonStem extends BlockSolid {
 
     public BlockCrimsonStem() {
-        this(0);
-    }
-    
-    public BlockCrimsonStem(int meta) {
-        super(meta);
     }
     
     @Override
@@ -81,7 +75,7 @@ public class BlockCrimsonStem extends BlockSolidMeta implements Faceable {
     
     @Override
     public Item toItem() {
-            return new ItemBlock(this);
+        return new ItemBlock(this);
     }
 
     @Override
@@ -93,9 +87,4 @@ public class BlockCrimsonStem extends BlockSolidMeta implements Faceable {
     public BlockColor getColor() {
                 return BlockColor.BLACK_BLOCK_COLOR;
     }*/
-    
-    @Override
-    public BlockFace getBlockFace() {
-        return BlockFace.fromIndex(this.getDamage() & 0x7);
-    }
 }
