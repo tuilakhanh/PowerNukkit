@@ -13,9 +13,14 @@ import cn.nukkit.math.BlockFace;
  * author: MagicDroidX
  * Nukkit Project
  */
-public class BlockCrimsonStem extends BlockSolid {
+public class BlockCrimsonStem extends BlockSolidMeta {
 
     public BlockCrimsonStem() {
+        this(0);
+    }
+    
+    public BlockCrimsonStem(int meta) {
+        super(meta);
     }
     
     @Override
