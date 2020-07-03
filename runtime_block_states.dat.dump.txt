@@ -13137,22 +13137,27 @@ minecraft:crimson_trapdoor;open_bit=1;upside_down_bit=1;direction=3
 
 minecraft:crimson_wall_sign;facing_direction=0
 []
-[507:0]
+[507:0, 507:6, 507:7]
 
 minecraft:crimson_wall_sign;facing_direction=1
 []
+[507:1]
 
 minecraft:crimson_wall_sign;facing_direction=2
 []
+[507:2]
 
 minecraft:crimson_wall_sign;facing_direction=3
 []
+[507:3]
 
 minecraft:crimson_wall_sign;facing_direction=4
 []
+[507:4]
 
 minecraft:crimson_wall_sign;facing_direction=5
 []
+[507:5]
 
 minecraft:crying_obsidian
 []
@@ -21973,22 +21978,27 @@ minecraft:warped_trapdoor;open_bit=1;upside_down_bit=1;direction=3
 
 minecraft:warped_wall_sign;facing_direction=0
 []
-[508:0]
+[508:0, 508:6, 508:7]
 
 minecraft:warped_wall_sign;facing_direction=1
 []
+[508:1]
 
 minecraft:warped_wall_sign;facing_direction=2
 []
+[508:2]
 
 minecraft:warped_wall_sign;facing_direction=3
 []
+[508:3]
 
 minecraft:warped_wall_sign;facing_direction=4
 []
+[508:4]
 
 minecraft:warped_wall_sign;facing_direction=5
 []
+[508:5]
 
 minecraft:warped_wart_block
 []
