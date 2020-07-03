@@ -13,7 +13,7 @@ import cn.nukkit.math.BlockFace;
  * author: MagicDroidX
  * Nukkit Project
  */
-public class BlockCrimsonStem extends BlockSolidMeta {
+public class BlockCrimsonStem extends BlockSolidMeta implements Faceable {
 
     public BlockCrimsonStem() {
         this(0);
