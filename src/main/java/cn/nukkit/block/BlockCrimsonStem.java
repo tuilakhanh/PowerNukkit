@@ -55,16 +55,8 @@ public class BlockCrimsonStem extends BlockSolidMeta {
 
     @Override
     public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
-        short[] faces = new short[]{
-                0,
-                0,
-                1,
-                1,
-                2,
-                2
-        };
-        
-        this.setDamage(faces[face.getIndex()]);
+        int[] faces = {0, 0, 1, 1, 2, 2};
+        this.setDamage(faces[player != null ? face.getIndex() : 0]);
         this.getLevel().setBlock(block, this, true, true);
 
         return true;
