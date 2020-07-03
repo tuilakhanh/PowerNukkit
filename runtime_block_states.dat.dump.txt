@@ -12707,13 +12707,14 @@ minecraft:crimson_button;button_pressed_bit=1;facing_direction=5
 
 minecraft:crimson_door;open_bit=0;upper_block_bit=0;door_hinge_bit=0;direction=0
 []
-[499:0]
+[499:0, 449:16]
 
 minecraft:crimson_door;open_bit=0;upper_block_bit=0;door_hinge_bit=0;direction=1
 []
 
 minecraft:crimson_door;open_bit=0;upper_block_bit=0;door_hinge_bit=0;direction=2
 []
+[499:2, 449:18]
 
 minecraft:crimson_door;open_bit=0;upper_block_bit=0;door_hinge_bit=0;direction=3
 []
@@ -12723,21 +12724,25 @@ minecraft:crimson_door;open_bit=0;upper_block_bit=0;door_hinge_bit=1;direction=0
 
 minecraft:crimson_door;open_bit=0;upper_block_bit=0;door_hinge_bit=1;direction=1
 []
+[499:1, 449:17]
 
 minecraft:crimson_door;open_bit=0;upper_block_bit=0;door_hinge_bit=1;direction=2
 []
 
 minecraft:crimson_door;open_bit=0;upper_block_bit=0;door_hinge_bit=1;direction=3
 []
+[499:3, 449:19]
 
 minecraft:crimson_door;open_bit=0;upper_block_bit=1;door_hinge_bit=0;direction=0
 []
+[499:8, 449:24]
 
 minecraft:crimson_door;open_bit=0;upper_block_bit=1;door_hinge_bit=0;direction=1
 []
 
 minecraft:crimson_door;open_bit=0;upper_block_bit=1;door_hinge_bit=0;direction=2
 []
+[499:10, 449:26]
 
 minecraft:crimson_door;open_bit=0;upper_block_bit=1;door_hinge_bit=0;direction=3
 []
@@ -12747,21 +12752,25 @@ minecraft:crimson_door;open_bit=0;upper_block_bit=1;door_hinge_bit=1;direction=0
 
 minecraft:crimson_door;open_bit=0;upper_block_bit=1;door_hinge_bit=1;direction=1
 []
+[499:9, 449:25]
 
 minecraft:crimson_door;open_bit=0;upper_block_bit=1;door_hinge_bit=1;direction=2
 []
 
 minecraft:crimson_door;open_bit=0;upper_block_bit=1;door_hinge_bit=1;direction=3
 []
+[499:11, 449:27]
 
 minecraft:crimson_door;open_bit=1;upper_block_bit=0;door_hinge_bit=0;direction=0
 []
+[499:4, 449:20]
 
 minecraft:crimson_door;open_bit=1;upper_block_bit=0;door_hinge_bit=0;direction=1
 []
 
 minecraft:crimson_door;open_bit=1;upper_block_bit=0;door_hinge_bit=0;direction=2
 []
+[499:6, 449:22]
 
 minecraft:crimson_door;open_bit=1;upper_block_bit=0;door_hinge_bit=0;direction=3
 []
@@ -12771,21 +12780,25 @@ minecraft:crimson_door;open_bit=1;upper_block_bit=0;door_hinge_bit=1;direction=0
 
 minecraft:crimson_door;open_bit=1;upper_block_bit=0;door_hinge_bit=1;direction=1
 []
+[499:5, 449:21]
 
 minecraft:crimson_door;open_bit=1;upper_block_bit=0;door_hinge_bit=1;direction=2
 []
 
 minecraft:crimson_door;open_bit=1;upper_block_bit=0;door_hinge_bit=1;direction=3
 []
+[499:7, 449:23]
 
 minecraft:crimson_door;open_bit=1;upper_block_bit=1;door_hinge_bit=0;direction=0
 []
+[499:12, 449:28]
 
 minecraft:crimson_door;open_bit=1;upper_block_bit=1;door_hinge_bit=0;direction=1
 []
 
 minecraft:crimson_door;open_bit=1;upper_block_bit=1;door_hinge_bit=0;direction=2
 []
+[499:14, 449:30]
 
 minecraft:crimson_door;open_bit=1;upper_block_bit=1;door_hinge_bit=0;direction=3
 []
@@ -12795,12 +12808,14 @@ minecraft:crimson_door;open_bit=1;upper_block_bit=1;door_hinge_bit=1;direction=0
 
 minecraft:crimson_door;open_bit=1;upper_block_bit=1;door_hinge_bit=1;direction=1
 []
+[499:13, 449:29]
 
 minecraft:crimson_door;open_bit=1;upper_block_bit=1;door_hinge_bit=1;direction=2
 []
 
 minecraft:crimson_door;open_bit=1;upper_block_bit=1;door_hinge_bit=1;direction=3
 []
+[499:15, 449:31]
 
 minecraft:crimson_double_slab;top_slot_bit=0
 []
