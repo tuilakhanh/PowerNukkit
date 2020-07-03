@@ -59,7 +59,7 @@ public class BlockCrimsonStem extends BlockSolid {
                 0b0100
         };
         
-        this.setDamage(faces[face.getIndex()]);
+        this.setDamage(0x01 | faces[face.getIndex()]);
         this.getLevel().setBlock(block, this, true, true);
 
         return true;
