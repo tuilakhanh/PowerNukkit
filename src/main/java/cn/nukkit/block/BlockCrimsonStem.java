@@ -93,4 +93,9 @@ public class BlockCrimsonStem extends BlockSolidMeta implements Faceable {
     public BlockColor getColor() {
                 return BlockColor.BLACK_BLOCK_COLOR;
     }*/
+    
+    @Override
+    public BlockFace getBlockFace() {
+        return BlockFace.fromIndex(this.getDamage() & 0x7);
+    }
 }
