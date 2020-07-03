@@ -50,16 +50,8 @@ public class BlockWarpedStem extends BlockSolid {
 
     @Override
     public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
-        short[] faces = new short[]{
-                0,
-                0,
-                0b1000,
-                0b1000,
-                0b0100,
-                0b0100
-        };
-        
-        //this.setDamage(((this.getDamage() & 0x03) | faces[face.getIndex()]));
+        int[] faces = {0, 0, 1, 1, 2, 2};
+        this.setDamage(faces[player != null ? face.getIndex() : 0]);
         this.getLevel().setBlock(block, this, true, true);
 
         return true;
@@ -83,7 +75,7 @@ public class BlockWarpedStem extends BlockSolid {
     
     @Override
     public Item toItem() {
-            return new ItemBlock(this);
+        return new ItemBlock(this);
     }
 
     @Override
@@ -93,6 +85,6 @@ public class BlockWarpedStem extends BlockSolid {
 
     /*@Override
     public BlockColor getColor() {
-                return BlockColor.BLACK_BLOCK_COLOR;
+        return BlockColor.BLACK_BLOCK_COLOR;
     }*/
 }
