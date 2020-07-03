@@ -53,13 +53,13 @@ public class BlockCrimsonStem extends BlockSolid {
         short[] faces = new short[]{
                 0,
                 0,
-                0b1000,
-                0b1000,
-                0b0100,
-                0b0100
+                1,
+                1,
+                2,
+                2
         };
         
-        this.setDamage(0x01 | faces[face.getIndex()]);
+        this.setDamage(faces[face.getIndex()]);
         this.getLevel().setBlock(block, this, true, true);
 
         return true;
