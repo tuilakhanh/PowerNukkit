@@ -9,24 +9,24 @@ import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.utils.BlockColor;
 
-public class BlockLantern extends BlockFlowable {
+public class BlockSoulLantern extends BlockFlowable {
 
-    public BlockLantern() {
+    public BlockSoulLantern() {
         this(0);
     }
 
-    public BlockLantern(int meta) {
+    public BlockSoulLantern(int meta) {
         super(meta);
     }
 
     @Override
     public int getId() {
-        return LANTERN;
+        return SOUL_LANTERN;
     }
 
     @Override
     public String getName() {
-        return "Lantern";
+        return "Soul Lantern";
     }
 
     private boolean isBlockAboveValid() {
@@ -111,7 +111,7 @@ public class BlockLantern extends BlockFlowable {
 
     @Override
     public int getLightLevel() {
-        return 15;
+        return 10;
     }
 
     @Override
@@ -166,7 +166,7 @@ public class BlockLantern extends BlockFlowable {
 
     @Override
     public Item toItem() {
-        return new ItemBlock(new BlockLantern());
+        return new ItemBlock(new BlockSoulLantern());
     }
 
     @Override

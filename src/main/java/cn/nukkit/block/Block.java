@@ -451,8 +451,13 @@ public abstract class Block extends Position implements Metadatable, Cloneable, 
 
             list[NETHERITE_BLOCK] = BlockNetherite.class; //525
             
+            list[SOUL_TORCH] = BlockSoulTorch.class; //523
+            list[SOUL_LANTERN] = BlockSoulLantern.class; //524
+            
+            list[CHAIN_BLOCK] = BlockChain.class; //541
+            
             initializing = true;
-          
+            
             for (int id = 0; id < MAX_BLOCK_ID; id++) {
                 Class c = list[id];
                 if (c != null) {

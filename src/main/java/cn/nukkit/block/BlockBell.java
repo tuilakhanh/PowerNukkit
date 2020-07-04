@@ -270,7 +270,7 @@ public class BlockBell extends BlockTransparentMeta implements Faceable {
             } else {
                 return false;
             }
-        } else if (support.getId() == SCAFFOLDING || support instanceof BlockCauldron || support.getId() == HOPPER_BLOCK) {
+        } else if (support.getId() == SCAFFOLDING || support instanceof BlockCauldron || support.getId() == HOPPER_BLOCK || support instanceof BlockChain) {
             return attachmentFace == BlockFace.UP;
         } else if (support instanceof BlockFence || support instanceof BlockWall) {
             return attachmentFace == BlockFace.UP || attachmentFace == BlockFace.DOWN;
