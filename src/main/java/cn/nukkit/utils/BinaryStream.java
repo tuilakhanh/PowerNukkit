@@ -13,7 +13,6 @@ import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.nbt.tag.StringTag;
-import cn.nukkit.network.protocol.ProtocolInfo;
 import cn.nukkit.network.protocol.types.EntityLink;
 import it.unimi.dsi.fastutil.io.FastByteArrayInputStream;
 
@@ -260,10 +259,6 @@ public class BinaryStream {
     }
 
     public void putSkin(Skin skin) {
-        putSkin(ProtocolInfo.CURRENT_PROTOCOL, skin);
-    }
-
-    public void putSkin(int protocol, Skin skin) {
         this.putString(skin.getSkinId());
         this.putString(skin.getSkinResourcePatch());
         this.putImage(skin.getSkinData());
@@ -309,10 +304,6 @@ public class BinaryStream {
     }
 
     public Skin getSkin() {
-        return getSkin(ProtocolInfo.CURRENT_PROTOCOL);
-    }
-
-    public Skin getSkin(int protocol) {
         Skin skin = new Skin();
         skin.setSkinId(this.getString());
         skin.setSkinResourcePatch(this.getString());

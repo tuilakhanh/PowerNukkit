@@ -22,7 +22,7 @@ public class LoginPacket extends DataPacket {
     public static final byte NETWORK_ID = ProtocolInfo.LOGIN_PACKET;
 
     public String username;
-    public int protocol_;
+    public int protocol;
     public UUID clientUUID;
     public long clientId;
     public Skin skin;
@@ -34,12 +34,12 @@ public class LoginPacket extends DataPacket {
 
     @Override
     public void decode() {
-        this.protocol_ = this.getInt();
-        if (protocol_ == 0) {
+        this.protocol = this.getInt();
+        if (protocol == 0) {
             setOffset(getOffset() + 2);
-            this.protocol_ = getInt();
+            this.protocol = getInt();
         }
-        if (!ProtocolInfo.SUPPORTED_PROTOCOLS.contains(protocol_)) {
+        if (!ProtocolInfo.SUPPORTED_PROTOCOLS.contains(protocol)) {
             // decoding the chain could cause issues on newer or older versions.
             return;
         }
@@ -55,7 +55,7 @@ public class LoginPacket extends DataPacket {
     }
 
     public int getProtocol() {
-        return protocol_;
+        return protocol;
     }
 
     private void decodeChainData() {

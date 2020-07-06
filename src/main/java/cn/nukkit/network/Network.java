@@ -237,7 +237,6 @@ public class Network {
 
                 if (pk != null) {
                     try {
-                        pk.protocol = player.protocol;
                         pk.decode();
                     } catch (Exception e) {
                         log.warn("Unable to decode {} from {}", pk.getClass().getSimpleName(), player.getName());
