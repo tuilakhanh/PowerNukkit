@@ -1081,6 +1081,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 return false;
             }
 
+            if (log.isTraceEnabled() && !server.isIgnoredPacket(packet.getClass())) {
+                log.trace("Outbound {}: {}", this.getName(), packet);
+            }
 
             this.interfaz.putPacket(this, packet, false, false);
         }
@@ -2171,6 +2174,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 return;
             }
 
+            if (log.isTraceEnabled() && !server.isIgnoredPacket(packet.getClass())) {
+                log.trace("Inbound {}: {}", this.getName(), packet);
+            }
 
             packetswitch:
             switch (packet.pid()) {

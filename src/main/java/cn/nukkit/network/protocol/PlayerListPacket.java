@@ -43,7 +43,7 @@ public class PlayerListPacket extends DataPacket {
             }
         }
 
-        if (type == TYPE_ADD) {
+        if (type == TYPE_ADD && protocol >= 390) {
             for (Entry entry : this.entries) { // Biggest wtf
                 this.putBoolean(entry.skin.isTrusted());
             }
