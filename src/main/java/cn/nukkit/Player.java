@@ -134,6 +134,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public static final int BEACON_WINDOW_ID = 4;
     public static final int GRINDSTONE_WINDOW_ID = 2;
 
+    public int protocol = ProtocolInfo.CURRENT_PROTOCOL;
+
     protected final SourceInterface interfaz;
 
     public boolean playedBefore;
@@ -1047,6 +1049,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             return false;
         }
 
+        packet.protocol = this.protocol;
+
         try (Timing timing = Timings.getSendDataPacketTiming(packet)) {
             DataPacketSendEvent event = new DataPacketSendEvent(this, packet);
             this.server.getPluginManager().callEvent(event);
@@ -1092,6 +1096,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     @Deprecated
     public int dataPacket(DataPacket packet, boolean needACK) {
+        packet.protocol = this.protocol;
         return this.dataPacket(packet) ? 0 : -1;
     }
 
@@ -1121,6 +1126,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     @Deprecated
     public int directDataPacket(DataPacket packet, boolean needACK) {
+        packet.protocol = this.protocol;
         return this.directDataPacket(packet) ? 0 : -1;
     }
 
@@ -2162,6 +2168,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             return;
         }
 
+        packet.protocol = this.protocol;
+
         try (Timing timing = Timings.getReceiveDataPacketTiming(packet)) {
             DataPacketReceiveEvent ev = new DataPacketReceiveEvent(this, packet);
             this.server.getPluginManager().callEvent(ev);
@@ -2187,9 +2195,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                     LoginPacket loginPacket = (LoginPacket) packet;
 
+                    this.protocol = loginPacket.getProtocol();
+
                     String message;
-                    if (!ProtocolInfo.SUPPORTED_PROTOCOLS.contains(loginPacket.getProtocol())) {
-                        if (loginPacket.getProtocol() < ProtocolInfo.CURRENT_PROTOCOL) {
+                    if (!ProtocolInfo.SUPPORTED_PROTOCOLS.contains(this.protocol)) {
+                        if (this.protocol < ProtocolInfo.CURRENT_PROTOCOL) {
                             message = "disconnectionScreen.outdatedClient";
 
                             this.sendPlayStatus(PlayStatusPacket.LOGIN_FAILED_CLIENT, true);
@@ -2198,7 +2208,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                             this.sendPlayStatus(PlayStatusPacket.LOGIN_FAILED_SERVER, true);
                         }
-                        if (((LoginPacket) packet).protocol < 137) {
+                        if (((LoginPacket) packet).protocol_ < 137) {
                             DisconnectPacket disconnectPacket = new DisconnectPacket();
                             disconnectPacket.message = message;
                             disconnectPacket.encode();

@@ -21,7 +21,7 @@ public class PlayerSkinPacket extends DataPacket {
     @Override
     public void decode() {
         uuid = getUUID();
-        skin = getSkin();
+        skin = getSkin(protocol);
         newSkinName = getString();
         oldSkinName = getString();
         if (!feof()) { // -facepalm-
