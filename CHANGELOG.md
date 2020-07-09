@@ -11,6 +11,8 @@ Click the link above to see the future.
 
 ### Fixes
 - [#326] Enchantment table not working
+- [#297] Using the hoe or shovel doesn't emit any sound
+- [#328] ClassCastException and some logic errors while processing the chunk backward compatibility method
 
 ## [1.3.0.1-PN] - 2020-07-01 ([Check the milestone](https://github.com/GameModsBR/PowerNukkit/milestone/14?closed=1))
 Improves plugin compatibility and downgrade the RakNet lib to solve a memory leak
@@ -418,7 +420,10 @@ Fixes several anvil issues.
 [#281]: https://github.com/GameModsBR/PowerNukkit/pull/281
 [#285]: https://github.com/GameModsBR/PowerNukkit/pull/285
 [#293]: https://github.com/GameModsBR/PowerNukkit/pull/293
+[#297]: https://github.com/GameModsBR/PowerNukkit/pull/297
 [#315]: https://github.com/GameModsBR/PowerNukkit/pull/315
+[#319]: https://github.com/GameModsBR/PowerNukkit/pull/319
 [#320]: https://github.com/GameModsBR/PowerNukkit/pull/320
 [#323]: https://github.com/GameModsBR/PowerNukkit/issues/323
 [#326]: https://github.com/GameModsBR/PowerNukkit/pull/326
+[#328]: https://github.com/GameModsBR/PowerNukkit/issues/326
