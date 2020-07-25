@@ -271,7 +271,7 @@ public abstract class BlockPistonBase extends BlockSolidMeta implements Faceable
         blockEntity.move(extending, attached);
         return true;
     }
-    
+
     protected BlockPistonHead createHead(int damage) {
         return (BlockPistonHead) Block.get(getPistonHeadBlockId(), damage);
     }
@@ -298,7 +298,7 @@ public abstract class BlockPistonBase extends BlockSolidMeta implements Faceable
         return false;
     }
 
-    public static class BlocksCalculator {
+    public class BlocksCalculator {
 
         private final Vector3 pistonPos;
         private Vector3 armPos;
