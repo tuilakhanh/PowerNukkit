@@ -288,11 +288,6 @@ public class Potion implements Cloneable {
             case WITHER_II:
                 effect = Effect.getEffect(Effect.WITHER);
                 break;
-            case NO_EFFECTS:
-            case MUNDANE:
-            case MUNDANE_II:
-            case THICK:
-            case AWKWARD:
             default:
                 return null;
         }
@@ -377,15 +372,6 @@ public class Potion implements Cloneable {
                     return 16;
                 case WITHER_II:
                     return 30;
-                case HARMING_II:
-                case HARMING:
-                case INSTANT_HEALTH_II:
-                case INSTANT_HEALTH:
-                case AWKWARD:
-                case THICK:
-                case MUNDANE_II:
-                case MUNDANE:
-                case NO_EFFECTS:
                 default:
                     return 0;
             }
@@ -427,15 +413,6 @@ public class Potion implements Cloneable {
                     return 22;
                 case WITHER_II:
                     return 30;
-                case HARMING_II:
-                case HARMING:
-                case INSTANT_HEALTH_II:
-                case INSTANT_HEALTH:
-                case AWKWARD:
-                case THICK:
-                case MUNDANE_II:
-                case MUNDANE:
-                case NO_EFFECTS:
                 default:
                     return 0;
             }
