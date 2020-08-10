@@ -5018,6 +5018,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
             gameRulesChanged.gameRules = level.getGameRules();
             this.dataPacket(gameRulesChanged);
+
+            if (oldLevel.getDimension() != level.getDimension()) {
+                this.setDimension(level.getDimension());
+            }
             return true;
         }
 
