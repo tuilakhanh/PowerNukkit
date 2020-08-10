@@ -24,11 +24,13 @@ It's also advisable to have a backup schedule set up. PowerNukkit is highly expe
 Links
 --------------------
 
+* __[PowerNukkit Website](https://powernukkit.org/)__
+* __[PowerNukkit Forum](https://discuss.powernukkit.org/)__
 * __[Download PowerNukkit](https://github.com/PowerNukkit/PowerNukkit/releases)__
 * __[PowerNukkit Discord](https://powernukkit.org/discord)__
 * __[Plugins](https://nukkitx.com/resources/categories/nukkit-plugins.1)__
-* __[Wiki](https://nukkitx.com/wiki/nukkit)__
 * __[NukkitX](https://github.com/NukkitX/Nukkit)__
+* __[NukkitX Wiki](https://nukkitx.com/wiki/nukkit)__
 * __[NukkitX News](https://nukkitx.com)__
 * __[NukkitX Forums](https://nukkitx.com/forums)__
 * __[NukkitX Discord](https://discord.gg/5PzMkyK)__
@@ -110,3 +112,12 @@ Check the [docker-compose.yml](docker-compose.yml) file for more details.
 Contributing
 ------------
 Please read the [CONTRIBUTING](.github/CONTRIBUTING.md) guide before submitting any issue. Issues with insufficient information or in the wrong format will be closed and will not be reviewed.
+
+---------
+
+![](https://www.yourkit.com/images/yklogo.png)  
+YourKit supports open source projects with innovative and intelligent tools
+for monitoring and profiling Java and .NET applications.  
+YourKit is the creator of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/),
+[YourKit .NET Profiler](https://www.yourkit.com/.net/profiler/),
+and [YourKit YouMonitor](https://www.yourkit.com/youmonitor/).

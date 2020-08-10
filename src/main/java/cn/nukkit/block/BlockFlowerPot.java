@@ -5,6 +5,7 @@ import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityFlowerPot;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemFlowerPot;
+import cn.nukkit.level.Level;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -33,6 +34,10 @@ public class BlockFlowerPot extends BlockFlowable {
             case BROWN_MUSHROOM:
             case CACTUS:
             case WITHER_ROSE:
+            case WARPED_FUNGUS:
+            case CRIMSON_FUNGUS:
+            case WARPED_ROOTS:
+            case CRIMSON_ROOTS:
             case BAMBOO:
                 // TODO: 2016/2/4 case NETHER_WART:
                 return true;
@@ -65,10 +70,28 @@ public class BlockFlowerPot extends BlockFlowable {
     public double getResistance() {
         return 0;
     }
+    
+    private boolean isSupportValid(Block block) {
+        return block.isSolid(BlockFace.UP) || block instanceof BlockFence || block instanceof BlockWall || block instanceof BlockHopper;
+    }
+
+    @Override
+    public int onUpdate(int type) {
+        if (type == Level.BLOCK_UPDATE_NORMAL) {
+            if (!isSupportValid(down())) {
+                level.useBreakOn(this);
+                return type;
+            }
+        }
+        return 0;
+    }
 
     @Override
     public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
-        if (face != BlockFace.UP) return false;
+        if (!isSupportValid(down())) {
+            return false;
+        }
+        
         CompoundTag nbt = new CompoundTag()
                 .putString("id", BlockEntity.FLOWER_POT)
                 .putInt("x", (int) this.x)
@@ -106,10 +129,10 @@ public class BlockFlowerPot extends BlockFlowable {
         int blockId;
         int itemMeta;
         if (!canPlaceIntoFlowerPot(item.getId())) {
-            if (!canPlaceIntoFlowerPot(item.getBlock().getId())) {
+            if (!canPlaceIntoFlowerPot(item.getBlockId())) {
                 return true;
             }
-            blockId = item.getBlock().getId();
+            blockId = item.getBlockId();
             itemMeta = item.getDamage();
         } else {
             blockId = item.getId();
