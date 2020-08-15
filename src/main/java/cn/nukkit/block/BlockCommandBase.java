@@ -48,20 +48,21 @@ public abstract class BlockCommandBase extends BlockSolidMeta implements Faceabl
     public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
         // This code was made with BlockDispenser.java
         if (player != null) {
-            if (player.isCreative() && player.isOp()) {
-                if (Math.abs(player.x - this.x) < 2 && Math.abs(player.z - this.z) < 2) {
-                    double y = player.y + player.getEyeHeight();
-                    
-                    if (y - this.y > 2) {
-                        this.setDamage(BlockFace.UP.getIndex());
-                    } else if (this.y - y > 0) {
-                        this.setDamage(BlockFace.DOWN.getIndex());
-                    } else {
-                        this.setDamage(player.getHorizontalFacing().getOpposite().getIndex());
-                    }
+            if (!player.isCreative() || !player.isOp()) {
+                return false;
+            }
+            if (Math.abs(player.x - this.x) < 2 && Math.abs(player.z - this.z) < 2) {
+                double y = player.y + player.getEyeHeight();
+                
+                if (y - this.y > 2) {
+                    this.setDamage(BlockFace.UP.getIndex());
+                } else if (this.y - y > 0) {
+                    this.setDamage(BlockFace.DOWN.getIndex());
                 } else {
                     this.setDamage(player.getHorizontalFacing().getOpposite().getIndex());
                 }
+            } else {
+                this.setDamage(player.getHorizontalFacing().getOpposite().getIndex());
             }
         }
         this.getLevel().setBlock(block, this, true);
