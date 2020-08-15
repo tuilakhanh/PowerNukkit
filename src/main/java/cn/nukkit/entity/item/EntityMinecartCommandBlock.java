@@ -17,7 +17,7 @@ public class EntityMinecartCommandBlock extends EntityMinecartAbstract {
     
     // TODO: Add Functionality
     
-    public EntityMinecartHopper(FullChunk chunk, CompoundTag nbt) {
+    public EntityMinecartCommandBlock(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
         setDisplayBlock(Block.get(Block.COMMAND_BLOCK), false);
     }
