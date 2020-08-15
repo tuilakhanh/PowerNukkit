@@ -2,6 +2,7 @@ package cn.nukkit;
 
 import cn.nukkit.api.Since;
 import cn.nukkit.block.Block;
+import cn.nukkit.block.BlockID;
 import cn.nukkit.blockentity.*;
 import cn.nukkit.command.*;
 import cn.nukkit.console.NukkitConsole;
@@ -15,13 +16,11 @@ import cn.nukkit.entity.mob.*;
 import cn.nukkit.entity.passive.*;
 import cn.nukkit.entity.projectile.*;
 import cn.nukkit.entity.weather.EntityLightning;
+import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.HandlerList;
 import cn.nukkit.event.level.LevelInitEvent;
 import cn.nukkit.event.level.LevelLoadEvent;
-import cn.nukkit.event.server.BatchPacketsEvent;
-import cn.nukkit.event.server.PlayerDataSerializeEvent;
-import cn.nukkit.event.server.QueryRegenerateEvent;
-import cn.nukkit.event.server.ServerStopEvent;
+import cn.nukkit.event.server.*;
 import cn.nukkit.inventory.CraftingManager;
 import cn.nukkit.inventory.Recipe;
 import cn.nukkit.item.Item;
@@ -42,6 +41,7 @@ import cn.nukkit.level.generator.Generator;
 import cn.nukkit.level.generator.Nether;
 import cn.nukkit.level.generator.Normal;
 import cn.nukkit.math.NukkitMath;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.metadata.EntityMetadataStore;
 import cn.nukkit.metadata.LevelMetadataStore;
 import cn.nukkit.metadata.PlayerMetadataStore;
@@ -54,10 +54,7 @@ import cn.nukkit.network.CompressBatchedTask;
 import cn.nukkit.network.Network;
 import cn.nukkit.network.RakNetInterface;
 import cn.nukkit.network.SourceInterface;
-import cn.nukkit.network.protocol.BatchPacket;
-import cn.nukkit.network.protocol.DataPacket;
-import cn.nukkit.network.protocol.PlayerListPacket;
-import cn.nukkit.network.protocol.ProtocolInfo;
+import cn.nukkit.network.protocol.*;
 import cn.nukkit.network.query.QueryHandler;
 import cn.nukkit.network.rcon.RCON;
 import cn.nukkit.permission.BanEntry;
@@ -2523,6 +2520,7 @@ public class Server {
         BlockEntity.registerBlockEntity(BlockEntity.DISPENSER, BlockEntityDispenser.class);
         BlockEntity.registerBlockEntity(BlockEntity.DROPPER, BlockEntityDropper.class);
         BlockEntity.registerBlockEntity(BlockEntity.MOVING_BLOCK, BlockEntityMovingBlock.class);
+        BlockEntity.registerBlockEntity(BlockEntity.COMMAND_BLOCK, BlockEntityCommandBlock.class);
     }
 
     public boolean isNetherAllowed() {
@@ -2551,6 +2549,80 @@ public class Server {
         @Override
         public void run() {
             console.start();
+        }
+    }
+
+    @EventHandler
+    public void onDataPacketReceive(DataPacketReceiveEvent event) {
+        DataPacket packet = event.getPacket();
+        if (packet instanceof CommandBlockUpdatePacket) {
+            CommandBlockUpdatePacket pk = (CommandBlockUpdatePacket) packet;
+            Player player = event.getPlayer();
+            if (player.isOp() && player.isCreative()) {
+                if (pk.isBlock) {
+                    BlockEntity blockEntity = player.level.getBlockEntity(new Vector3(pk.x, pk.y, pk.z));
+                    if (blockEntity instanceof BlockEntityCommandBlock) {
+                        BlockEntityCommandBlock commandBlock = (BlockEntityCommandBlock) blockEntity;
+                        Block block = commandBlock.getLevelBlock();
+
+                        switch (pk.commandBlockMode) {
+                            case ICommandBlock.MODE_REPEATING:
+                                if (block.getId() != BlockID.REPEATING_COMMAND_BLOCK) {
+                                    block = Block.get(BlockID.REPEATING_COMMAND_BLOCK, block.getDamage());
+                                    commandBlock.scheduleUpdate();
+                                }
+                                break;
+                            case ICommandBlock.MODE_CHAIN:
+                                if (block.getId() != BlockID.CHAIN_COMMAND_BLOCK) {
+                                    block = Block.get(BlockID.CHAIN_COMMAND_BLOCK, block.getDamage());
+                                }
+                                break;
+                            case ICommandBlock.MODE_NORMAL:
+                            default:
+                                if (block.getId() != BlockID.COMMAND_BLOCK) {
+                                    block = Block.get(BlockID.COMMAND_BLOCK, block.getDamage());
+                                }
+                                break;
+                        }
+
+                        int meta = block.getDamage();
+                        boolean conditional = pk.isConditional;
+
+                        if (conditional) {
+                            if (meta < 8) {
+                                block.setDamage(meta + 8);
+                            }
+                        } else {
+                            if (meta > 8) {
+                                block.setDamage(meta - 8);
+                            }
+                        }
+
+                        player.level.setBlock(commandBlock, block, true);
+
+                        commandBlock.setCommand(pk.command);
+                        commandBlock.setName(pk.name);
+                        commandBlock.setTrackOutput(pk.shouldTrackOutput);
+                        commandBlock.setConditional(conditional);
+                        commandBlock.setTickDelay(pk.tickDelay);
+                        commandBlock.setExecutingOnFirstTick(pk.executingOnFirstTick);
+
+                        boolean isRedstoneMode = pk.isRedstoneMode;
+                        commandBlock.setAuto(!isRedstoneMode);
+                        if (!isRedstoneMode && pk.commandBlockMode == ICommandBlock.MODE_NORMAL) {
+                            commandBlock.trigger();
+                        }
+
+//                        commandBlock.spawnToAll();
+                    }
+                }/* else {
+                    Entity entity = this.getLevel().getEntity(commandBlockUpdatePacket.minecartEid);
+                    if (entity instanceof EntityMinecartCommandBlock) {
+                        EntityMinecartCommandBlock commandMinecart = (EntityMinecartCommandBlock) entity;
+                        //TODO: Minecart with Command Block
+                    }
+                }*/
+            }
         }
     }
 }

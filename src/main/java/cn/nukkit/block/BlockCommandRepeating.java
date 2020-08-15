@@ -1,5 +1,7 @@
 package cn.nukkit.block;
 
+import cn.nukkit.blockentity.BlockEntityCommandBlock;
+import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.BlockColor;
 
 /**
@@ -21,6 +23,10 @@ public class BlockCommandRepeating extends BlockCommandBase {
     public BlockColor getColor() {
         return BlockColor.PURPLE_BLOCK_COLOR;
     }
-    
-    // TODO: Add Functionality
+
+    @Override
+    protected CompoundTag createCompoundTag(CompoundTag nbt) {
+        nbt.putBoolean(BlockEntityCommandBlock.TAG_EXECUTE_ON_FIRST_TICK, true);
+        return nbt;
+    }
 }
