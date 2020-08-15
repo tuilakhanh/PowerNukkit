@@ -1,5 +1,7 @@
 package cn.nukkit.block;
 
+import cn.nukkit.utils.BlockColor;
+
 /**
  * Created by good777LUCKY
  */
