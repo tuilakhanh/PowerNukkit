@@ -44,6 +44,11 @@ public class EntityMinecartCommandBlock extends EntityMinecartAbstract {
     }
     
     @Override
+    public void activate(int x, int y, int z, boolean flag) {
+        // TODO: Add Functionality
+    }
+    
+    @Override
     public boolean onInteract(Player player, Item item, Vector3 clickedPos) {
         // TODO: Add UI
         return false;
