@@ -44,6 +44,7 @@ public abstract class BlockCommandBase extends BlockSolidMeta implements Faceabl
     
     @Override
     public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
+        // This code was made with BlockDispenser.java
         if (player != null) {
             if (Math.abs(player.x - this.x) < 2 && Math.abs(player.z - this.z) < 2) {
                 double y = player.y + player.getEyeHeight();
