@@ -55,7 +55,7 @@ public abstract class BlockEntity extends Position {
     public static final String BELL = "Bell";
     public static final String DISPENSER = "Dispenser";
     public static final String DROPPER = "Dropper";
-    // public static final String COMMAND_BLOCK = "CommandBlock"; TODO: Add Command Block BlockEntity
+    public static final String COMMAND_BLOCK = "CommandBlock";
 
 
     public static long count = 1;

@@ -1,11 +1,20 @@
 package cn.nukkit.block;
 
+import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.BlockColor;
 
 /**
  * Created by good777LUCKY
  */
 public class BlockCommand extends BlockCommandBase {
+
+    public BlockCommand() {
+        this(0);
+    }
+
+    public BlockCommand(int meta) {
+        super(meta);
+    }
 
     @Override
     public String getName() {
@@ -21,6 +30,8 @@ public class BlockCommand extends BlockCommandBase {
     public BlockColor getColor() {
         return BlockColor.BROWN_BLOCK_COLOR;
     }
-    
-    // TODO: Add Functionality
+
+    protected CompoundTag createCompoundTag(CompoundTag nbt) {
+        return nbt;
+    }
 }
