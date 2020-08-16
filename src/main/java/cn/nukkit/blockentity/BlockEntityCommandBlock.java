@@ -336,7 +336,7 @@ public class BlockEntityCommandBlock extends BlockEntitySpawnable implements ICo
         this.command = command;
         this.successCount = 0;
         this.namedTag.putString(TAG_COMMAND, this.command);
-        this.namedTag.putInt(TAG_SUCCESS_COUNT, this.successCount)
+        this.namedTag.putInt(TAG_SUCCESS_COUNT, this.successCount);
     }
 
     @Override
