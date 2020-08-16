@@ -10,7 +10,6 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.utils.BlockColor;
 import cn.nukkit.utils.Faceable;
-import cn.nukkit.scheduler.CommandBlockTrigger;
 
 import java.util.Map;
 

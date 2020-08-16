@@ -23,7 +23,6 @@ import cn.nukkit.utils.Faceable;
 import cn.nukkit.ICommandBlock;
 import cn.nukkit.block.BlockCommand;
 import cn.nukkit.block.BlockCommandChain;
-import cn.nukkit.block.BlockCommandRepeating;
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 
