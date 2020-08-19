@@ -1765,8 +1765,17 @@ public class Server {
                 return NBTIO.readCompressed(dataStream.get());
             }
         } catch (IOException e) {
-            log.warn(this.getLanguage().translateString("nukkit.data.playerCorrupted", name));
-            log.throwing(e);
+            try {
+                dataStream = event.getSerializer().read(name + ".bak", event.getUuid().orElse(null));
+                if (dataStream.isPresent()) {
+                    CompoundTag data = NBTIO.readCompressed(dataStream.get());
+                    getLogger().warning("Corrupted player data found for " + name + ", loaded previous data from backup");
+                    return data;
+                }
+            } catch (IOException e2) {
+                log.warn(this.getLanguage().translateString("nukkit.data.playerCorrupted", name));
+                log.throwing(e2);
+            }
         } finally {
             if (dataStream.isPresent()) {
                 try {
@@ -1857,6 +1866,18 @@ public class Server {
     }
 
     private void saveOfflinePlayerDataInternal(PlayerDataSerializer serializer, CompoundTag tag, String name, UUID uuid) {
+        try {
+            File old = new File(getDataPath() + "players/" + name + ".dat");
+            if (old.exists()) {
+                try {
+                    com.google.common.io.Files.copy(old, new File(getDataPath() + "players/" + name + ".bak.dat"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e0) {
+            e0.printStackTrace();
+        }
         try (OutputStream dataStream = serializer.write(name, uuid)) {
             NBTIO.writeGZIPCompressed(tag, dataStream, ByteOrder.BIG_ENDIAN);
         } catch (Exception e) {
